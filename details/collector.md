@@ -4,6 +4,7 @@
 - [Feature list](#feature-list)
 - [Discussion](#discussion)
     - [Type aliases](#type-aliases)
+    - [Field/const comments](#fieldconst-comments)
 
 ## Feature list
 
