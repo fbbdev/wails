@@ -6,11 +6,17 @@ import (
 	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
-//wails:inject jc:export {MessageDialogOptions, Button, FileFilter, OpenFileDialogOptions, SaveFileDialogOptions} from "./models.js";
-//wails:inject tc:export {MessageDialogOptions, Button, FileFilter, OpenFileDialogOptions, SaveFileDialogOptions} from "./models.ts";
 type Dialogs struct{}
 
-type MessageDialogOptions struct {
+type Button = struct {
+	*application.Button
+}
+
+type FileFilter = struct {
+	application.FileFilter
+}
+
+type MessageDialogOptions = struct {
 	application.MessageDialogOptions
 
 	// List of button choices to show in the dialog.
@@ -19,8 +25,24 @@ type MessageDialogOptions struct {
 	Detached bool `json:",omitempty"`
 }
 
-type Button struct {
-	*application.Button
+type OpenFileDialogOptions = struct {
+	application.OpenFileDialogOptions
+
+	// List of file filters.
+	Filters []FileFilter `json:",omitempty"`
+
+	// Indicates whether the dialog should appear detached from the main window.
+	Detached bool `json:",omitempty"`
+}
+
+type SaveFileDialogOptions = struct {
+	application.SaveFileDialogOptions
+
+	// List of file filters.
+	Filters []FileFilter `json:",omitempty"`
+
+	// Indicates whether the dialog should appear detached from the main window.
+	Detached bool `json:",omitempty"`
 }
 
 // Info shows a modal dialog containing an informational message.
@@ -78,20 +100,6 @@ func messageDialog(wnd application.Window, options *MessageDialogOptions, dialog
 	return <-result
 }
 
-type FileFilter struct {
-	application.FileFilter
-}
-
-type OpenFileDialogOptions struct {
-	application.OpenFileDialogOptions
-
-	// List of file filters.
-	Filters []FileFilter `json:",omitempty"`
-
-	// Indicates whether the dialog should appear detached from the main window.
-	Detached bool `json:",omitempty"`
-}
-
 // OpenFile shows a dialog that allows the user
 // to select one or more files to open.
 // It may throw an exception in case of errors.
@@ -116,16 +124,6 @@ func (Dialogs) OpenFile(wnd application.Window, options OpenFileDialogOptions) (
 	} else {
 		return dialog.PromptForSingleSelection()
 	}
-}
-
-type SaveFileDialogOptions struct {
-	application.SaveFileDialogOptions
-
-	// List of file filters.
-	Filters []FileFilter `json:",omitempty"`
-
-	// Indicates whether the dialog should appear detached from the main window.
-	Detached bool `json:",omitempty"`
 }
 
 // SaveFile shows a dialog that allows the user

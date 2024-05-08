@@ -6,9 +6,6 @@ import (
 	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
-//wails:inject jc:export {RGBA} from "./models.js";
-//wails:inject tc:export {RGBA} from "./models.ts";
-//wails:inject
 //wails:inject j*:import * as self from "./window.js";
 //wails:inject t*:import * as self from "./window.ts";
 //wails:inject
@@ -43,15 +40,15 @@ import (
 //wails:inject **:}
 type Window struct{}
 
-type Position struct {
+type Position = struct {
 	X, Y int
 }
 
-type RGBA struct {
+type RGBA = struct {
 	application.RGBA
 }
 
-type LRTB struct {
+type LRTB = struct {
 	*application.LRTB
 }
 

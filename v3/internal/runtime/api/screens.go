@@ -6,11 +6,9 @@ import (
 	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
-//wails:inject jc:export {Screen, Rect, Size} from "./models.js";
-//wails:inject tc:export {Screen, Rect, Size} from "./models.ts";
 type Screens struct{}
 
-type Screen struct {
+type Screen = struct {
 	*application.Screen
 
 	Size     Size // The size of the display
@@ -18,11 +16,11 @@ type Screen struct {
 	WorkArea Rect // The work area of the display
 }
 
-type Rect struct {
+type Rect = struct {
 	application.Rect
 }
 
-type Size struct {
+type Size = struct {
 	application.Size
 }
 
