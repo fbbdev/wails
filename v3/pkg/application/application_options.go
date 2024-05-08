@@ -12,17 +12,35 @@ import (
 // The zero value of Service is invalid.
 // Valid values may only be obtained by calling [NewService].
 type Service struct {
-	instance any
+	instances []any
 }
 
 // NewService returns a Service value wrapping the given pointer.
 // If T is not a named type, the returned value is invalid.
 func NewService[T any](instance *T) Service {
-	return Service{instance}
+	return Service{[]any{instance}}
 }
 
-func (s Service) Instance() any {
-	return s.instance
+// NewCombinedService returns a Service value that combines all services
+// specified by the arguments.
+func NewCombinedService(services ...Service) Service {
+	result := Service{}
+
+	for _, service := range services {
+		result.instances = append(result.instances, service.instances...)
+	}
+
+	return result
+}
+
+// Instance returns the i-th service instance provided by the receiver.
+func (s Service) Instance(i int) any {
+	return s.instances[i]
+}
+
+// NumInstances returns the number of service instances provided by the receiver.
+func (s Service) NumInstances() int {
+	return len(s.instances)
 }
 
 // Options contains the options for the application

@@ -78,16 +78,18 @@ type Bindings struct {
 	methodAliases map[uint32]uint32
 }
 
-func NewBindings(instances []Service, aliases map[uint32]uint32) (*Bindings, error) {
+func NewBindings(services []Service, aliases map[uint32]uint32) (*Bindings, error) {
 	b := &Bindings{
 		boundMethods:  make(map[string]*BoundMethod),
 		boundByID:     make(map[uint32]*BoundMethod),
 		methodAliases: aliases,
 	}
-	for _, binding := range instances {
-		err := b.Add(binding.Instance())
-		if err != nil {
-			return nil, err
+	for _, service := range services {
+		for _, instance := range service.instances {
+			err := b.Add(instance)
+			if err != nil {
+				return nil, err
+			}
 		}
 	}
 	return b, nil
