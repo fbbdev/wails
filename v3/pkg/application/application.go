@@ -32,7 +32,21 @@ var globalApplication *App
 
 // AlphaAssets is the default assets for the alpha application
 var AlphaAssets = AssetOptions{
-	Handler: BundledAssetFileServer(alphaAssets),
+	Handler: AssetFileServerFS(alphaAssets),
+	Middleware: func(next http.Handler) http.Handler {
+		// Custom API call because we can't depend on runtimebundle here.
+		return http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
+			if req.URL.Path == "/openurl" {
+				query := req.URL.Query()
+				if query.Has("url") {
+					globalApplication.BrowserOpenURL(query.Get("url"))
+					rw.WriteHeader(http.StatusOK)
+					return
+				}
+			}
+			next.ServeHTTP(rw, req)
+		})
+	},
 }
 
 func init() {
