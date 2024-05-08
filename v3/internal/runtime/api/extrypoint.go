@@ -2,7 +2,7 @@
 //wails:include common/*.js
 //wails:include j*:js/*.js
 //wails:include t*:ts/*.js
-//wails:inject export { Call, Flags } from "../core/index.js";
+//wails:inject export {Call, Flags, Types} from "../core/index.js";
 //wails:inject export * as WML from "./wml.js";
 package api
 

@@ -19,10 +19,12 @@ import (
 //wails:inject **: */
 //wails:inject j*:export function Get(name) {
 //wails:inject t*:export function Get(name: string): { readonly [Method in keyof (typeof self) as Exclude<Method, "Get">]: (typeof self)[Method] } {
+//wails:inject **:    let getMethod = (key) => byName[key].bind(null, name);
+//wails:inject **:    if (name === "") { getMethod = (key) => self[key]; };
 //wails:inject **:    const wnd = {};
 //wails:inject **:    for (const method in self) {
-//wails:inject **:        if (method !== "Get") {
-//wails:inject **:            wnd[method] = byName[method].bind(null, name);
+//wails:inject **:        if (method !== "Get" && method !== "RGBA") {
+//wails:inject **:            wnd[method] = getMethod(method);
 //wails:inject **:        }
 //wails:inject **:    }
 //wails:inject j*:    return /** @type {any} */(Object.freeze(wnd));

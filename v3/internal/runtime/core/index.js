@@ -22,6 +22,11 @@ export * as Types from "./types.js";
 
 import {invoke} from "./runtime.js";
 
+// Provide dummy event listener.
+if (!("dispatchWailsEvent" in window._wails)) {
+    window._wails.dispatchWailsEvent = function () {};
+}
+
 // Notify backend
 window._wails.invoke = invoke;
 invoke("wails:runtime:ready");

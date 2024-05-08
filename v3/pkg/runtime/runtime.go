@@ -8,6 +8,7 @@
 //wails:inject     Flags,
 //wails:inject     Screens,
 //wails:inject     System,
+//wails:inject     Types,
 //wails:inject     Window,
 //wails:inject     WML
 //wails:inject } from "../../internal/runtime/api/index.js";

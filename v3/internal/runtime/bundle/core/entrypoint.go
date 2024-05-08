@@ -1,4 +1,4 @@
-//wails:inject import "../../core/index.js";
+//wails:inject export * from "../../core/index.js";
 //wails:name bundle
 package core
 
