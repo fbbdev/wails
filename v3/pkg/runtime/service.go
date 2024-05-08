@@ -17,7 +17,7 @@ func Service() application.Service {
 		application.NewService(&Application{}),
 		application.NewService(&Browser{}),
 		application.NewService(&Clipboard{}),
-		application.NewService(&Dialog{}),
+		application.NewService(&Dialogs{}),
 		application.NewService(&Events{}),
 		application.NewService(&Screens{}),
 		application.NewService(&System{}),

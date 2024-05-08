@@ -8,7 +8,7 @@ import (
 
 //wails:inject jc:export {MessageDialogOptions, Button, FileFilter, OpenFileDialogOptions, SaveFileDialogOptions} from "./models.js";
 //wails:inject tc:export {MessageDialogOptions, Button, FileFilter, OpenFileDialogOptions, SaveFileDialogOptions} from "./models.ts";
-type Dialog struct{}
+type Dialogs struct{}
 
 type MessageDialogOptions struct {
 	application.MessageDialogOptions
@@ -24,22 +24,22 @@ type Button struct {
 }
 
 // Info shows a modal dialog containing an informational message.
-func (Dialog) Info(wnd application.Window, options MessageDialogOptions) string {
+func (Dialogs) Info(wnd application.Window, options MessageDialogOptions) string {
 	return messageDialog(wnd, &options, application.InfoDialog())
 }
 
 // Warning shows a modal dialog containing a warning message.
-func (Dialog) Warning(wnd application.Window, options MessageDialogOptions) string {
+func (Dialogs) Warning(wnd application.Window, options MessageDialogOptions) string {
 	return messageDialog(wnd, &options, application.InfoDialog())
 }
 
 // Error shows a modal dialog containing an error message.
-func (Dialog) Error(wnd application.Window, options MessageDialogOptions) string {
+func (Dialogs) Error(wnd application.Window, options MessageDialogOptions) string {
 	return messageDialog(wnd, &options, application.InfoDialog())
 }
 
 // Question shows a modal dialog asking a question.
-func (Dialog) Question(wnd application.Window, options MessageDialogOptions) string {
+func (Dialogs) Question(wnd application.Window, options MessageDialogOptions) string {
 	return messageDialog(wnd, &options, application.InfoDialog())
 }
 
@@ -97,7 +97,7 @@ type OpenFileDialogOptions struct {
 // It may throw an exception in case of errors.
 // It returns a string in single selection mode,
 // an array of strings in multiple selection mode.
-func (Dialog) OpenFile(wnd application.Window, options OpenFileDialogOptions) (any, error) {
+func (Dialogs) OpenFile(wnd application.Window, options OpenFileDialogOptions) (any, error) {
 	options.OpenFileDialogOptions.Filters = make([]application.FileFilter, len(options.Filters))
 	for i, filter := range options.Filters {
 		options.OpenFileDialogOptions.Filters[i] = filter.FileFilter
@@ -131,7 +131,7 @@ type SaveFileDialogOptions struct {
 // SaveFile shows a dialog that allows the user
 // to select a location where a file should be saved.
 // It may throw an exception in case of errors.
-func (Dialog) SaveFile(wnd application.Window, options SaveFileDialogOptions) (string, error) {
+func (Dialogs) SaveFile(wnd application.Window, options SaveFileDialogOptions) (string, error) {
 	options.SaveFileDialogOptions.Filters = make([]application.FileFilter, len(options.Filters))
 	for i, filter := range options.Filters {
 		options.SaveFileDialogOptions.Filters[i] = filter.FileFilter
