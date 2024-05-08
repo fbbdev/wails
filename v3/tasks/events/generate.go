@@ -98,19 +98,6 @@ $$COMMONJSEVENTS	},
 };
 `
 
-var eventsTS = `
-export declare const EventTypes: {
-	Windows: {
-$$WINDOWSTSEVENTS	},
-	Mac: {
-$$MACTSEVENTS	},
-	Linux: {
-$$LINUXTSEVENTS	},
-	Common: {
-$$COMMONTSEVENTS	},
-};
-`
-
 func main() {
 
 	eventNames, err := os.ReadFile("../../pkg/events/events.txt")
@@ -139,11 +126,6 @@ func main() {
 	macJSEvents := bytes.NewBufferString("")
 	windowsJSEvents := bytes.NewBufferString("")
 	commonJSEvents := bytes.NewBufferString("")
-
-	linuxTSEvents := bytes.NewBufferString("")
-	macTSEvents := bytes.NewBufferString("")
-	windowsTSEvents := bytes.NewBufferString("")
-	commonTSEvents := bytes.NewBufferString("")
 
 	eventToJS := bytes.NewBufferString("")
 
@@ -191,7 +173,6 @@ func main() {
 			linuxEventsDecl.WriteString("\t" + eventTitle + " " + eventType + "\n")
 			linuxEventsValues.WriteString("\t\t" + event + ": " + strconv.Itoa(id) + ",\n")
 			linuxJSEvents.WriteString("\t\t" + event + ": \"" + strings.TrimSpace(string(line)) + "\",\n")
-			linuxTSEvents.WriteString("\t\t" + event + ": string,\n")
 			eventToJS.WriteString("\t" + strconv.Itoa(id) + ": \"" + strings.TrimSpace(string(line)) + "\",\n")
 			maxLinuxEvents = id
 			linuxCHeaderEvents.WriteString("#define Event" + eventTitle + " " + strconv.Itoa(id) + "\n")
@@ -206,7 +187,6 @@ func main() {
 			macEventsDecl.WriteString("\t" + eventTitle + " " + eventType + "\n")
 			macEventsValues.WriteString("\t\t" + event + ": " + strconv.Itoa(id) + ",\n")
 			macJSEvents.WriteString("\t\t" + event + ": \"" + strings.TrimSpace(string(line)) + "\",\n")
-			macTSEvents.WriteString("\t\t" + event + ": string,\n")
 			macCHeaderEvents.WriteString("#define Event" + eventTitle + " " + strconv.Itoa(id) + "\n")
 			eventToJS.WriteString("\t" + strconv.Itoa(id) + ": \"" + strings.TrimSpace(string(line)) + "\",\n")
 			maxMacEvents = id
@@ -255,7 +235,6 @@ func main() {
 			commonEventsDecl.WriteString("\t" + eventTitle + " " + eventType + "\n")
 			commonEventsValues.WriteString("\t\t" + event + ": " + strconv.Itoa(id) + ",\n")
 			commonJSEvents.WriteString("\t\t" + event + ": \"" + strings.TrimSpace(string(line)) + "\",\n")
-			commonTSEvents.WriteString("\t\t" + event + ": string,\n")
 			eventToJS.WriteString("\t" + strconv.Itoa(id) + ": \"" + strings.TrimSpace(string(line)) + "\",\n")
 		case "windows":
 			eventType := "ApplicationEventType"
@@ -268,7 +247,6 @@ func main() {
 			windowsEventsDecl.WriteString("\t" + eventTitle + " " + eventType + "\n")
 			windowsEventsValues.WriteString("\t\t" + event + ": " + strconv.Itoa(id) + ",\n")
 			windowsJSEvents.WriteString("\t\t" + event + ": \"" + strings.TrimSpace(string(line)) + "\",\n")
-			windowsTSEvents.WriteString("\t\t" + event + ": string,\n")
 			eventToJS.WriteString("\t" + strconv.Itoa(id) + ": \"" + strings.TrimSpace(string(line)) + "\",\n")
 		}
 	}
@@ -297,17 +275,7 @@ func main() {
 	templateToWrite = strings.ReplaceAll(templateToWrite, "$$WINDOWSJSEVENTS", windowsJSEvents.String())
 	templateToWrite = strings.ReplaceAll(templateToWrite, "$$LINUXJSEVENTS", linuxJSEvents.String())
 	templateToWrite = strings.ReplaceAll(templateToWrite, "$$COMMONJSEVENTS", commonJSEvents.String())
-	err = os.WriteFile("../../internal/runtime/desktop/@wailsio/runtime/src/event_types.js", []byte(templateToWrite), 0644)
-	if err != nil {
-		panic(err)
-	}
-
-	// Save the eventsTS template substituting the values and decls
-	templateToWrite = strings.ReplaceAll(eventsTS, "$$MACTSEVENTS", macTSEvents.String())
-	templateToWrite = strings.ReplaceAll(templateToWrite, "$$WINDOWSTSEVENTS", windowsTSEvents.String())
-	templateToWrite = strings.ReplaceAll(templateToWrite, "$$LINUXTSEVENTS", linuxTSEvents.String())
-	templateToWrite = strings.ReplaceAll(templateToWrite, "$$COMMONTSEVENTS", commonTSEvents.String())
-	err = os.WriteFile("../../internal/runtime/desktop/@wailsio/runtime/types/event_types.d.ts", []byte(templateToWrite), 0644)
+	err = os.WriteFile("../../internal/runtime/api/common/event_types.js", []byte(templateToWrite), 0644)
 	if err != nil {
 		panic(err)
 	}

@@ -70,6 +70,7 @@ type BoundMethod struct {
 	PackagePath string
 
 	needsContext bool
+	needsWindow  bool
 }
 
 type Bindings struct {
@@ -205,6 +206,8 @@ func (b *Bindings) getMethods(value interface{}, isPlugin bool) ([]*BoundMethod,
 	}
 
 	ctxType := reflect.TypeFor[context.Context]()
+	wndType := reflect.TypeFor[Window]()
+	wndIndex := 0
 
 	// Process Methods
 	for i := 0; i < ptrType.NumMethod(); i++ {
@@ -238,15 +241,23 @@ func (b *Bindings) getMethods(value interface{}, isPlugin bool) ([]*BoundMethod,
 			}
 			globalApplication.debug("Adding method:", args...)
 		}
+
 		// Iterate inputs
 		methodType := method.Type()
 		inputParamCount := methodType.NumIn()
 		var inputs []*Parameter
+
 		for inputIndex := 0; inputIndex < inputParamCount; inputIndex++ {
 			input := methodType.In(inputIndex)
-			if inputIndex == 0 && input.AssignableTo(ctxType) {
+
+			if inputIndex == 0 && input == ctxType {
 				boundMethod.needsContext = true
+				wndIndex = 1
 			}
+			if inputIndex == wndIndex && input == wndType {
+				boundMethod.needsWindow = true
+			}
+
 			thisParam := newParameter("", input)
 			inputs = append(inputs, thisParam)
 		}
@@ -272,7 +283,7 @@ func (b *Bindings) getMethods(value interface{}, isPlugin bool) ([]*BoundMethod,
 var errorType = reflect.TypeFor[error]()
 
 // Call will attempt to call this bound method with the given args
-func (b *BoundMethod) Call(ctx context.Context, args []json.RawMessage) (returnValue interface{}, err error) {
+func (b *BoundMethod) Call(ctx context.Context, wnd Window, args []json.RawMessage) (returnValue interface{}, err error) {
 	// Use a defer statement to capture panics
 	defer func() {
 		if r := recover(); r != nil {
@@ -309,6 +320,10 @@ func (b *BoundMethod) Call(ctx context.Context, args []json.RawMessage) (returnV
 
 	if b.needsContext {
 		callArgs[0] = reflect.ValueOf(ctx)
+		base++
+	}
+	if b.needsWindow {
+		callArgs[base] = reflect.ValueOf(wnd)
 		base++
 	}
 

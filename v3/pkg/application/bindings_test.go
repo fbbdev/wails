@@ -179,7 +179,7 @@ func TestBoundMethodCall(t *testing.T) {
 				t.Fatalf("bound method not found: %s", callOptions.MethodName)
 			}
 
-			result, err := method.Call(context.TODO(), tt.args)
+			result, err := method.Call(context.TODO(), nil, tt.args)
 			if tt.err != err && (tt.err == nil || err == nil || !strings.Contains(err.Error(), tt.err.Error())) {
 				t.Fatalf("error: %v, expected error: %v", err, tt.err)
 			}

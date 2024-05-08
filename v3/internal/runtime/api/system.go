@@ -1,11 +1,11 @@
-package runtime
+package api
 
 import (
 	"github.com/wailsapp/wails/v3/internal/operatingsystem"
 	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
-//wails:inject export * from "../../internal/runtime/js/system.js";
+//wails:inject export * from "../core/system.js";
 type System struct{}
 
 // IsDarkMode retrieves system dark mode status.

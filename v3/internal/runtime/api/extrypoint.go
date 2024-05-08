@@ -1,13 +1,14 @@
-//wails:include js/*.js
-//wails:include j*:wml_js/*.js
-//wails:include t*:wml_ts/*.js
-//wails:inject export { Call, Flags } from "../../internal/runtime/js/index.js";
+//wails:internal
+//wails:include common/*.js
+//wails:include j*:js/*.js
+//wails:include t*:ts/*.js
+//wails:inject export { Call, Flags } from "../core/index.js";
 //wails:inject export * as WML from "./wml.js";
-package runtime
+package api
 
 import (
 	// Pull in core code.
-	_ "github.com/wailsapp/wails/v3/internal/runtime/js"
+	_ "github.com/wailsapp/wails/v3/internal/runtime/core"
 
 	"github.com/wailsapp/wails/v3/pkg/application"
 )

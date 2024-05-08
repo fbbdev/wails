@@ -1,4 +1,4 @@
-package runtime
+package api
 
 import "github.com/wailsapp/wails/v3/pkg/application"
 

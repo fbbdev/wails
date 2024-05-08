@@ -3,47 +3,62 @@
 version: "3"
 
 tasks:
-  install-deps:
-    internal: true
-    sources:
-      - package.json
-    cmds:
-      - npm install
-
-  test:
-    cmds:
-      - npx vitest run
-
   update:
-    cmds:
-      - npx npm-check-updates -u
+    run: once
+    deps:
+      - :cli:install
+      - :generate:events
 
-  build:debug:
+  build:
+    deps:
+      - build:core
+      - build:full
+    cmds:
+      - echo "Build Complete."
+
+  build:core:
+    deps:
+      - task: build:bundle
+        vars: { BUNDLE_DIR: ./bundle/core }
+
+  build:full:
+    deps:
+      - task: build:bundle
+        vars: { BUNDLE_DIR: ./bundle/full }
+
+  build:bundle:
+    internal: true
+    deps:
+      - update
+    cmds:
+      - task: generate
+        vars: { BUNDLE_DIR: "{{.BUNDLE_DIR}}" }
+      - task: build:all
+        vars: { BUNDLE_DIR: "{{.BUNDLE_DIR}}" }
+
+  generate:
     internal: true
     cmds:
-      - npx esbuild@latest desktop/@wailsio/runtime/src/index.js --inject:desktop/compiled/main.js --format=esm --bundle --tree-shaking=true --sourcemap=inline --outfile=../assetserver/bundledassets/runtime.debug.js --define:DEBUG=true
-
-  build:production:
-    internal: true
-    cmds:
-      - npx esbuild@latest desktop/@wailsio/runtime/src/index.js --inject:desktop/compiled/main.js --format=esm --bundle --tree-shaking=true --minify --outfile=../assetserver/bundledassets/runtime.js --define:DEBUG=false --drop:console
+      - rm -rf {{.BUNDLE_DIR}}/{{.BUILD_DIR}}
+      - wails3 generate bindings -v -d {{.BUNDLE_DIR}}/{{.BUILD_DIR}} {{.BUNDLE_DIR}}
 
   build:all:
     internal: true
     deps:
-      - build:debug
-      - build:production
+      - task: build:debug
+        vars: { BUNDLE_DIR: "{{.BUNDLE_DIR}}" }
+      - task: build:production
+        vars: { BUNDLE_DIR: "{{.BUNDLE_DIR}}" }
 
+  build:debug:
+    internal: true
     cmds:
-      - cmd: echo "Build Complete."
+      - npx esbuild@latest {{.BUNDLE_DIR}}/{{.BUILD_DIR}}/bundle.js --format=esm --bundle --tree-shaking=true --sourcemap=inline --outfile={{.BUNDLE_DIR}}/runtime.debug.js --define:DEBUG=true
 
-  build:
-    deps:
-      - install-deps
+  build:production:
+    internal: true
     cmds:
-      - task: build:all
+      - npx esbuild@latest {{.BUNDLE_DIR}}/{{.BUILD_DIR}}/bundle.js --format=esm --bundle --tree-shaking=true --minify --outfile={{.BUNDLE_DIR}}/runtime.js --define:DEBUG=false --drop:console
 
-  generate:events:
-    dir: ../../tasks/events
-    cmds:
-      - go run generate.go
+vars:
+  BUILD_DIR: .build
