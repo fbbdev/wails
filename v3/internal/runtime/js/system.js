@@ -82,4 +82,3 @@ export function IsARM64() {
 export function IsDebug() {
     return window._wails.environment.Debug === true;
 }
-

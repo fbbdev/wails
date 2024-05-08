@@ -1,4 +1,6 @@
 /**
+ * This code fragment is taken from nanoid (https://github.com/ai/nanoid):
+ *
  * The MIT License (MIT)
  *
  * Copyright 2017 Andrey Sitnik <andrey@sitnik.ru>
