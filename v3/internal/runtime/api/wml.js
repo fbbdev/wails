@@ -11,11 +11,11 @@ The electron alternative for Go
 
 /* jshint esversion: 9 */
 
-import {OpenURL} from "./Browser.js";
-import {Question} from "./Dialogs.js";
-import {Emit, WailsEvent} from "./Events.js";
+import {OpenURL} from "./browser.js";
+import {Question} from "./dialogs.js";
+import {Emit, WailsEvent} from "./events.js";
 import {canAbortListeners, whenReady} from "./utils.js";
-import * as Window from "./Window.js";
+import * as Window from "./window.js";
 
 /**
  * Sends an event with the given name and optional data.

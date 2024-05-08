@@ -9,8 +9,8 @@ import (
 //wails:inject jc:export {RGBA} from "./models.js";
 //wails:inject tc:export {RGBA} from "./models.ts";
 //wails:inject
-//wails:inject j*:import * as self from "./Window.js";
-//wails:inject t*:import * as self from "./Window.ts";
+//wails:inject j*:import * as self from "./window.js";
+//wails:inject t*:import * as self from "./window.ts";
 //wails:inject
 //wails:inject j*:/** @type {any} */
 //wails:inject j*:let thisWindow = null;
