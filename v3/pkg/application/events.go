@@ -44,7 +44,7 @@ type WailsEvent struct {
 	Name      string `json:"name"`
 	Data      any    `json:"data"`
 	Sender    string `json:"sender"`
-	Cancelled bool
+	Cancelled bool   `json:"-"`
 }
 
 func (e *WailsEvent) Cancel() {
@@ -55,7 +55,7 @@ func (e WailsEvent) ToJSON() string {
 	marshal, err := json.Marshal(&e)
 	if err != nil {
 		// TODO: Fatal error? log?
-		return ""
+		return "{}"
 	}
 	return string(marshal)
 }

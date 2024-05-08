@@ -46,10 +46,10 @@ const (
 )
 
 type Button struct {
-	Label     string
-	IsCancel  bool
-	IsDefault bool
-	Callback  func()
+	Label     string `json:",omitempty"` // Text that appears within the button.
+	IsCancel  bool   `json:",omitempty"` // True if the button should cancel an operation when clicked.
+	IsDefault bool   `json:",omitempty"` // True if the button should be the default action when the user presses enter.
+	Callback  func() `json:"-"`
 }
 
 func (b *Button) OnClick(callback func()) *Button {
@@ -72,11 +72,11 @@ type messageDialogImpl interface {
 }
 
 type MessageDialogOptions struct {
-	DialogType DialogType
-	Title      string
-	Message    string
+	DialogType DialogType `json:"-"`
+	Title      string     `json:",omitempty"` // The title of the dialog window.
+	Message    string     `json:",omitempty"` // The main message to show in the dialog.
 	Buttons    []*Button
-	Icon       []byte
+	Icon       []byte `json:"-"`
 	window     *WebviewWindow
 }
 
@@ -164,28 +164,30 @@ type openFileDialogImpl interface {
 }
 
 type FileFilter struct {
-	DisplayName string // Filter information EG: "Image Files (*.jpg, *.png)"
-	Pattern     string // semicolon separated list of extensions, EG: "*.jpg;*.png"
+	// Filter information, e.g. "Image Files (*.jpg, *.png)"
+	DisplayName string `json:",omitempty"`
+	// Semicolon separated list of extension patterns, e.g. "*.jpg;*.png"
+	Pattern string `json:",omitempty"`
 }
 
 type OpenFileDialogOptions struct {
-	CanChooseDirectories            bool
-	CanChooseFiles                  bool
-	CanCreateDirectories            bool
-	ShowHiddenFiles                 bool
-	ResolvesAliases                 bool
-	AllowsMultipleSelection         bool
-	HideExtension                   bool
-	CanSelectHiddenExtension        bool
-	TreatsFilePackagesAsDirectories bool
-	AllowsOtherFileTypes            bool
+	CanChooseDirectories            bool `json:",omitempty"` // Indicates if directories can be chosen.
+	CanChooseFiles                  bool `json:",omitempty"` // Indicates if files can be chosen.
+	CanCreateDirectories            bool `json:",omitempty"` // Indicates if directories can be created.
+	ShowHiddenFiles                 bool `json:",omitempty"` // Indicates if hidden files should be shown.
+	ResolvesAliases                 bool `json:",omitempty"` // Indicates if aliases should be resolved.
+	AllowsMultipleSelection         bool `json:",omitempty"` // Indicates if multiple selection is allowed.
+	HideExtension                   bool `json:",omitempty"` // Indicates if extensions should be hidden.
+	CanSelectHiddenExtension        bool `json:",omitempty"` // Indicates if hidden extensions can be selected.
+	TreatsFilePackagesAsDirectories bool `json:",omitempty"` // Indicates if file packages should be treated as directories.
+	AllowsOtherFileTypes            bool `json:",omitempty"` // Indicates if other file types are allowed.
 	Filters                         []FileFilter
-	Window                          *WebviewWindow
+	Window                          *WebviewWindow `json:"-"`
 
-	Title      string
-	Message    string
-	ButtonText string
-	Directory  string
+	Title      string `json:",omitempty"` // Title of the dialog.
+	Message    string `json:",omitempty"` // Message to show in the dialog.
+	ButtonText string `json:",omitempty"` // Text to display on the button.
+	Directory  string `json:",omitempty"` // Directory to open in the dialog.
 }
 
 type OpenFileDialogStruct struct {
@@ -361,19 +363,19 @@ func newSaveFileDialog() *SaveFileDialogStruct {
 }
 
 type SaveFileDialogOptions struct {
-	CanCreateDirectories            bool
-	ShowHiddenFiles                 bool
-	CanSelectHiddenExtension        bool
-	AllowOtherFileTypes             bool
-	HideExtension                   bool
-	TreatsFilePackagesAsDirectories bool
-	Title                           string
-	Message                         string
-	Directory                       string
-	Filename                        string
-	ButtonText                      string
+	CanCreateDirectories            bool   `json:",omitempty"` // Indicates if directories can be created.
+	ShowHiddenFiles                 bool   `json:",omitempty"` // Indicates if hidden files should be shown.
+	CanSelectHiddenExtension        bool   `json:",omitempty"` // Indicates if hidden extensions can be selected.
+	AllowOtherFileTypes             bool   `json:",omitempty"` // Indicates if other file types are allowed.
+	HideExtension                   bool   `json:",omitempty"` // Indicates if the extension should be hidden.
+	TreatsFilePackagesAsDirectories bool   `json:",omitempty"` // Indicates if file packages should be treated as directories.
+	Title                           string `json:",omitempty"` // Title of the dialog.
+	Message                         string `json:",omitempty"` // Message to show in the dialog.
+	Directory                       string `json:",omitempty"` // Directory to open in the dialog.
+	Filename                        string `json:",omitempty"` // Default filename to use in the dialog.
+	ButtonText                      string `json:",omitempty"` // Text to display on the button.
 	Filters                         []FileFilter
-	Window                          *WebviewWindow
+	Window                          *WebviewWindow `json:"-"`
 }
 
 type SaveFileDialogStruct struct {
