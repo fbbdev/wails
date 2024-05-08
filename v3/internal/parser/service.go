@@ -3,12 +3,20 @@ package parser
 import (
 	"go/types"
 	"path/filepath"
+	"slices"
 )
 
 // generateService collects information
 // and generates JS/TS binding code
 // for the given service type object.
 func (generator *Generator) generateService(obj *types.TypeName) {
+	if generator.options.UseBundledRuntime {
+		// When using the bundled runtime, suppress output from runtime packages.
+		if slices.Contains(generator.systemPaths.RuntimePackages, obj.Pkg().Path()) {
+			return
+		}
+	}
+
 	generator.logger.Debugf(
 		"discovered service type %s from package %s",
 		obj.Name(),

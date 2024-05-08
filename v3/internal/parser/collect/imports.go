@@ -50,7 +50,7 @@ func NewImportMap(importer *PackageInfo) *ImportMap {
 	if importer != nil {
 		self = importer.Path
 		collector = importer.collector
-		runtime = computeImportPath(self, collector.systemPaths.RuntimePackage)
+		runtime = computeImportPath(self, collector.systemPaths.RuntimeCorePackage)
 	}
 
 	return &ImportMap{

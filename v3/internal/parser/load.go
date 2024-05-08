@@ -16,7 +16,7 @@ func ResolveSystemPaths(buildFlags []string) (paths *config.SystemPaths, err err
 	if err != nil {
 		return
 	} else if len(contextPkgPaths) < 1 {
-		err = ErrNoContextPackage
+		err = errNoContextPackage
 		return
 	} else if len(contextPkgPaths) > 1 {
 		// This should never happen...
@@ -28,29 +28,36 @@ func ResolveSystemPaths(buildFlags []string) (paths *config.SystemPaths, err err
 	if err != nil {
 		return
 	} else if len(wailsAppPkgPaths) < 1 {
-		err = ErrNoApplicationPackage
+		err = errNoApplicationPackage
 		return
 	} else if len(wailsAppPkgPaths) > 1 {
 		// This should never happen...
 		panic("wails application package path matched multiple packages")
 	}
 
-	// Resolve wails runtime pkg path.
-	wailsRuntimePkgPaths, err := ResolvePatterns(buildFlags, config.WailsRuntimePkgPath)
+	// Resolve wails runtime core pkg path.
+	wailsRuntimeCorePkgPaths, err := ResolvePatterns(buildFlags, config.WailsRuntimeCorePkgPath)
 	if err != nil {
 		return
-	} else if len(wailsRuntimePkgPaths) < 1 {
-		err = ErrNoRuntimePackage
+	} else if len(wailsRuntimeCorePkgPaths) < 1 {
+		err = errNoRuntimeCorePackage
 		return
-	} else if len(wailsRuntimePkgPaths) > 1 {
+	} else if len(wailsRuntimeCorePkgPaths) > 1 {
 		// This should never happen...
-		panic("internal wails runtime package path matched multiple packages")
+		panic("wails internal JS runtime core package path matched multiple packages")
+	}
+
+	// Resolve wails runtime pkg paths.
+	wailsRuntimePkgPaths, err := ResolvePatterns(buildFlags, config.WailsRuntimePkgPaths...)
+	if err != nil {
+		return
 	}
 
 	paths = &config.SystemPaths{
 		ContextPackage:     contextPkgPaths[0],
 		ApplicationPackage: wailsAppPkgPaths[0],
-		RuntimePackage:     wailsRuntimePkgPaths[0],
+		RuntimeCorePackage: wailsRuntimeCorePkgPaths[0],
+		RuntimePackages:    wailsRuntimePkgPaths,
 	}
 	return
 }

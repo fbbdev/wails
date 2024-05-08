@@ -9,20 +9,20 @@ import (
 	"github.com/wailsapp/wails/v3/internal/parser/config"
 )
 
-// ErrNoContextPackage indicates that
+// errNoContextPackage indicates that
 // the canonical path for the standard context package
 // did not match any actual package.
-var ErrNoContextPackage = errors.New("standard context package not found at canonical import path ('context'): is the Wails v3 module properly installed?")
+var errNoContextPackage = errors.New("standard context package not found at canonical import path ('context'): is the Wails v3 module properly installed?")
 
-// ErrNoApplicationPackage indicates that
+// errNoApplicationPackage indicates that
 // the canonical path for the Wails application package
 // did not match any actual package.
-var ErrNoApplicationPackage = errors.New("Wails application package not found at canonical import path ('" + config.WailsAppPkgPath + "'): is the Wails v3 module properly installed?")
+var errNoApplicationPackage = errors.New("Wails application package not found at canonical import path ('" + config.WailsAppPkgPath + "'): is the Wails v3 module properly installed?")
 
-// ErrNoRuntimePackage indicates that
-// the canonical path for the internal Wails runtime package
+// errNoRuntimeCorePackage indicates that
+// the canonical path for the internal Wails JS runtime core package
 // did not match any actual package.
-var ErrNoRuntimePackage = errors.New("internal Wails JS runtime package not found at canonical import path ('" + config.WailsRuntimePkgPath + "'): is the Wails v3 module properly installed?")
+var errNoRuntimeCorePackage = errors.New("Wails internal JS runtime core package not found at canonical import path ('" + config.WailsRuntimeCorePkgPath + "'): is the Wails v3 module properly installed?")
 
 // ErrBadApplicationPackage indicates that
 // the Wails application package has invalid content.

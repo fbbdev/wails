@@ -21,6 +21,8 @@ type Generator struct {
 	options *flags.GenerateBindingsOptions
 	creator config.FileCreator
 
+	systemPaths *config.SystemPaths
+
 	// serviceFiles maps service file paths to their type object.
 	// It is used for lower/upper-case collision detection.
 	// Keys are strings, values are *types.TypeName.
@@ -118,7 +120,7 @@ func (generator *Generator) Generate(patterns ...string) (stats *collect.Stats, 
 		}
 	}()
 
-	systemPaths, err := ResolveSystemPaths(buildFlags)
+	generator.systemPaths, err = ResolveSystemPaths(buildFlags)
 	if err != nil {
 		return
 	}
@@ -126,7 +128,7 @@ func (generator *Generator) Generate(patterns ...string) (stats *collect.Stats, 
 	// Inject core runtime dependency if required.
 	if !generator.options.UseBundledRuntime {
 		patterns = slices.Clone(patterns)
-		patterns = append(patterns, config.WailsRuntimePkgPath)
+		patterns = append(patterns, config.WailsRuntimeCorePkgPath)
 	}
 
 	// Load initial packages.
@@ -157,7 +159,7 @@ func (generator *Generator) Generate(patterns ...string) (stats *collect.Stats, 
 	}
 
 	// Initialise subcomponents.
-	generator.collector = collect.NewCollector(pkgs, systemPaths, generator.options, garbleMap, &generator.scheduler, generator.logger)
+	generator.collector = collect.NewCollector(pkgs, generator.systemPaths, generator.options, garbleMap, &generator.scheduler, generator.logger)
 	generator.renderer = render.NewRenderer(generator.options, generator.collector)
 	garbleMap = nil
 
@@ -166,7 +168,7 @@ func (generator *Generator) Generate(patterns ...string) (stats *collect.Stats, 
 	serviceFound := sync.OnceFunc(func() { generator.logger.Statusf("Generating service bindings...") })
 
 	// Run static analysis and schedule service code generation for each result.
-	err = FindServices(pkgs, systemPaths, generator.logger, func(obj *types.TypeName) bool {
+	err = FindServices(pkgs, generator.systemPaths, generator.logger, func(obj *types.TypeName) bool {
 		serviceFound()
 		generator.scheduler.Schedule(func() {
 			generator.generateService(obj)
@@ -227,6 +229,13 @@ func (generator *Generator) Generate(patterns ...string) (stats *collect.Stats, 
 // included files and, if allowed by the options,
 // of an index file for the given package.
 func (generator *Generator) generateModelsIndexIncludes(info *collect.PackageInfo) {
+	if generator.options.UseBundledRuntime {
+		// When using the bundled runtime, suppress output from JS runtime packages.
+		if slices.Contains(generator.systemPaths.RuntimePackages, info.Path) {
+			return
+		}
+	}
+
 	index := info.Index(generator.options.TS)
 
 	// info.Index implies info.Collect: goroutines spawned below

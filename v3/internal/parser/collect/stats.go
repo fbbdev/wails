@@ -26,6 +26,10 @@ func (stats *Stats) Elapsed() time.Duration {
 }
 
 func (stats *Stats) Add(other *Stats) {
+	if other == nil {
+		return
+	}
+
 	stats.NumPackages += other.NumPackages
 	stats.NumServices += other.NumServices
 	stats.NumMethods += other.NumMethods
