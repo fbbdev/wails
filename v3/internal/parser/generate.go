@@ -123,6 +123,12 @@ func (generator *Generator) Generate(patterns ...string) (stats *collect.Stats, 
 		return
 	}
 
+	// Inject core runtime dependency if required.
+	if !generator.options.UseBundledRuntime {
+		patterns = slices.Clone(patterns)
+		patterns = append(patterns, config.WailsRuntimePkgPath)
+	}
+
 	// Load initial packages.
 	pkgs, err := LoadPackages(buildFlags, patterns...)
 

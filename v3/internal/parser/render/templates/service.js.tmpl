@@ -3,6 +3,7 @@
 {{- $internal := $module.InternalFile}}
 {{- $useNames := $module.UseNames}}
 {{- $useInterfaces := $module.UseInterfaces}}
+{{- $useBundle := .UseBundledRuntime}}
 {{- $imports := $module.Imports}}
 {{- with .Service -}}
 // @ts-check
@@ -20,7 +21,11 @@
  * @module
  */
 {{end}}
+{{- if $useBundle}}
+import {Call as $Call, Types as $Types} from "/wails/runtime.js";
+{{- else}}
 import {Call as $Call, Types as $Types} from "{{js $imports.Runtime}}/index.js";
+{{- end}}
 {{range $imports.External}}
 import * as {{jsimport .}} from "{{js .RelPath}}/{{js $models}}";
 {{- end}}{{if $imports.External}}

@@ -41,7 +41,7 @@ func TestGenerator(t *testing.T) {
 			//InternalFilename: "internal",
 			//IndexFilename:    "index",
 
-			//UseBundledRuntime: true,
+			UseBundledRuntime: true,
 
 			TS:            i&tsBit != 0,
 			UseInterfaces: i&useInterfacesBit != 0,

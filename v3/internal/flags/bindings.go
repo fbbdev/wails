@@ -16,15 +16,15 @@ type GenerateBindingsOptions struct {
 	//ModelsFilename    string `name:"models" description:"File name for exported JS/TS models (excluding the extension)" default:"models"`
 	//InternalFilename  string `name:"internal" description:"File name for unexported JS/TS models (excluding the extension)" default:"internal"`
 	//IndexFilename     string `name:"index" description:"File name for JS/TS package indexes (excluding the extension)" default:"index"`
-	TS            bool `name:"ts" description:"Generate Typescript bindings"`
-	UseInterfaces bool `name:"i" description:"Generate Typescript interfaces instead of classes"`
-	//UseBundledRuntime bool   `name:"b" description:"Use the bundled runtime instead of importing the npm package"`
-	UseNames      bool   `name:"names" description:"Use names instead of IDs for the binding calls"`
-	NoIndex       bool   `name:"noindex" description:"Do not generate JS/TS index files"`
-	GarbleMapFile string `name:"garblemap" description:"A file containing the output of the 'garble map' command, to be used when generating binding code for garble builds"`
-	DryRun        bool   `name:"dry" description:"Do not write output files"`
-	Silent        bool   `name:"silent" description:"Silent mode"`
-	Verbose       bool   `name:"v" description:"Enable debug output"`
+	TS                bool   `name:"ts" description:"Generate Typescript bindings"`
+	UseInterfaces     bool   `name:"i" description:"Generate Typescript interfaces instead of classes"`
+	UseBundledRuntime bool   `name:"b" description:"Use the bundled runtime instead of writing out runtime code"`
+	UseNames          bool   `name:"names" description:"Use names instead of IDs for the binding calls"`
+	NoIndex           bool   `name:"noindex" description:"Do not generate JS/TS index files"`
+	GarbleMapFile     string `name:"garblemap" description:"A file containing the output of the 'garble map' command, to be used when generating binding code for garble builds"`
+	DryRun            bool   `name:"dry" description:"Do not write output files"`
+	Silent            bool   `name:"silent" description:"Silent mode"`
+	Verbose           bool   `name:"v" description:"Enable debug output"`
 }
 
 var ErrUnmatchedQuote = errors.New("build flags contain an unmatched quote")

@@ -22,10 +22,7 @@ func GenerateBindings(options *flags.GenerateBindingsOptions, patterns []string)
 
 	if len(patterns) == 0 {
 		// No input pattern, load package from current directory.
-		patterns = []string{".", config.WailsRuntimePkgPath}
-	} else {
-		// Add internal JS runtime package.
-		patterns = append(patterns, config.WailsRuntimePkgPath)
+		patterns = []string{"."}
 	}
 
 	// Compute absolute path of output directory.
