@@ -12,7 +12,7 @@
 //wails:inject     Window,
 //wails:inject     WML
 //wails:inject } from "../../internal/runtime/api/index.js";
-package runtime
+package runtimeapi
 
 import (
 	"github.com/wailsapp/wails/v3/internal/runtime/api"

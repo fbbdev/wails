@@ -5,7 +5,7 @@ import (
 	"log"
 
 	"github.com/wailsapp/wails/v3/pkg/application"
-	runtimebundle "github.com/wailsapp/wails/v3/pkg/runtime/core"
+	runtimebundle "github.com/wailsapp/wails/v3/pkg/runtimeapi/bundle/core"
 )
 
 //go:embed assets
