@@ -275,7 +275,7 @@ func main() {
 	templateToWrite = strings.ReplaceAll(templateToWrite, "$$WINDOWSJSEVENTS", windowsJSEvents.String())
 	templateToWrite = strings.ReplaceAll(templateToWrite, "$$LINUXJSEVENTS", linuxJSEvents.String())
 	templateToWrite = strings.ReplaceAll(templateToWrite, "$$COMMONJSEVENTS", commonJSEvents.String())
-	err = os.WriteFile("../../internal/runtime/api/common/event_types.js", []byte(templateToWrite), 0644)
+	err = os.WriteFile("../../internal/runtime/api/event_types.js", []byte(templateToWrite), 0644)
 	if err != nil {
 		panic(err)
 	}
