@@ -2,12 +2,11 @@ package main
 
 import (
 	"embed"
-	_ "embed"
 	"log"
 
 	"github.com/wailsapp/wails/v3/pkg/application"
-	"github.com/wailsapp/wails/v3/pkg/runtimeapi"
-	runtimebundle "github.com/wailsapp/wails/v3/pkg/runtimeapi/bundle/full"
+	runtimeapi "github.com/wailsapp/wails/v3/pkg/runtime"
+	runtimebundle "github.com/wailsapp/wails/v3/pkg/runtime/bundle"
 )
 
 //go:embed assets/*
