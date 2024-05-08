@@ -6,7 +6,6 @@ import (
 	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
-//wails:internal
 type windowByName struct{}
 
 // Returns the absolute position of the window to the screen.
