@@ -207,7 +207,6 @@ func (b *Bindings) getMethods(value interface{}, isPlugin bool) ([]*BoundMethod,
 
 	ctxType := reflect.TypeFor[context.Context]()
 	wndType := reflect.TypeFor[Window]()
-	wndIndex := 0
 
 	// Process Methods
 	for i := 0; i < ptrType.NumMethod(); i++ {
@@ -245,6 +244,8 @@ func (b *Bindings) getMethods(value interface{}, isPlugin bool) ([]*BoundMethod,
 		// Iterate inputs
 		methodType := method.Type()
 		inputParamCount := methodType.NumIn()
+		wndIndex := 0
+
 		var inputs []*Parameter
 
 		for inputIndex := 0; inputIndex < inputParamCount; inputIndex++ {
@@ -305,6 +306,9 @@ func (b *BoundMethod) Call(ctx context.Context, wnd Window, args []json.RawMessa
 
 	argCount := len(args)
 	if b.needsContext {
+		argCount++
+	}
+	if b.needsWindow {
 		argCount++
 	}
 
