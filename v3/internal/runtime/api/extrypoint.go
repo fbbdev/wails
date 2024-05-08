@@ -22,5 +22,4 @@ var Service = application.NewCombinedService(
 	application.NewService(&System{}),
 	application.NewService(&Types{}),
 	application.NewService(&Window{}),
-	application.NewService(&windowByName{}),
 )
