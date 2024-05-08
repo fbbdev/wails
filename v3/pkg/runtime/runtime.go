@@ -16,10 +16,7 @@ package runtime
 
 import (
 	"github.com/wailsapp/wails/v3/internal/runtime/api"
-	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
-// Service initialises and returns the runtime API service.
-func Service() application.Service {
-	return api.Service()
-}
+// Service provides all runtime API services.
+var Service = api.Service

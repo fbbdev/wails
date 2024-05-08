@@ -10,19 +10,17 @@ import (
 	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
-func Service() application.Service {
-	return application.NewCombinedService(
-		application.NewService(&Application{}),
-		application.NewService(&Browser{}),
-		application.NewService(&Call{}),
-		application.NewService(&Clipboard{}),
-		application.NewService(&Dialogs{}),
-		application.NewService(&Events{}),
-		application.NewService(&Flags{}),
-		application.NewService(&Screens{}),
-		application.NewService(&System{}),
-		application.NewService(&Types{}),
-		application.NewService(&Window{}),
-		application.NewService(&windowByName{}),
-	)
-}
+var Service = application.NewCombinedService(
+	application.NewService(&Application{}),
+	application.NewService(&Browser{}),
+	application.NewService(&Call{}),
+	application.NewService(&Clipboard{}),
+	application.NewService(&Dialogs{}),
+	application.NewService(&Events{}),
+	application.NewService(&Flags{}),
+	application.NewService(&Screens{}),
+	application.NewService(&System{}),
+	application.NewService(&Types{}),
+	application.NewService(&Window{}),
+	application.NewService(&windowByName{}),
+)

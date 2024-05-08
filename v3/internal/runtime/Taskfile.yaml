@@ -53,12 +53,12 @@ tasks:
   build:debug:
     internal: true
     cmds:
-      - npx esbuild@latest {{.BUNDLE_DIR}}/{{.BUILD_DIR}}/bundle.js --format=esm --bundle --tree-shaking=true --sourcemap=inline --outfile={{.BUNDLE_DIR}}/runtime.debug.js --define:DEBUG=true
+      - npx esbuild@latest {{.BUNDLE_DIR}}/{{.BUILD_DIR}}/github.com/wailsapp/wails/v3/internal/runtime/{{.BUNDLE_DIR}}/index.js --format=esm --bundle --tree-shaking=true --sourcemap=inline --outfile={{.BUNDLE_DIR}}/runtime.debug.js --define:DEBUG=true
 
   build:production:
     internal: true
     cmds:
-      - npx esbuild@latest {{.BUNDLE_DIR}}/{{.BUILD_DIR}}/bundle.js --format=esm --bundle --tree-shaking=true --minify --outfile={{.BUNDLE_DIR}}/runtime.js --define:DEBUG=false --drop:console
+      - npx esbuild@latest {{.BUNDLE_DIR}}/{{.BUILD_DIR}}/github.com/wailsapp/wails/v3/internal/runtime/{{.BUNDLE_DIR}}/index.js --format=esm --bundle --tree-shaking=true --minify --outfile={{.BUNDLE_DIR}}/runtime.js --define:DEBUG=false --drop:console
 
 vars:
   BUILD_DIR: .build
