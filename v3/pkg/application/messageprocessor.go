@@ -15,15 +15,7 @@ import (
 
 const (
 	callRequest        = 0
-	clipboardRequest   = 1
-	applicationRequest = 2
-	eventsRequest      = 3
 	contextMenuRequest = 4
-	dialogRequest      = 5
-	windowRequest      = 6
-	screensRequest     = 7
-	systemRequest      = 8
-	browserRequest     = 9
 	cancelCallRequesst = 10
 )
 
@@ -103,26 +95,10 @@ func (m *MessageProcessor) HandleRuntimeCallWithIDs(rw http.ResponseWriter, r *h
 	}
 
 	switch object {
-	case windowRequest:
-		m.processWindowMethod(method, rw, r, targetWindow, params)
-	case clipboardRequest:
-		m.processClipboardMethod(method, rw, r, targetWindow, params)
-	case dialogRequest:
-		m.processDialogMethod(method, rw, r, targetWindow, params)
-	case eventsRequest:
-		m.processEventsMethod(method, rw, r, targetWindow, params)
-	case applicationRequest:
-		m.processApplicationMethod(method, rw, r, targetWindow, params)
 	case contextMenuRequest:
 		m.processContextMenuMethod(method, rw, r, targetWindow, params)
-	case screensRequest:
-		m.processScreensMethod(method, rw, r, targetWindow, params)
 	case callRequest:
 		m.processCallMethod(method, rw, r, targetWindow, params)
-	case systemRequest:
-		m.processSystemMethod(method, rw, r, targetWindow, params)
-	case browserRequest:
-		m.processBrowserMethod(method, rw, r, targetWindow, params)
 	case cancelCallRequesst:
 		m.processCallCancelMethod(method, rw, r, targetWindow, params)
 	default:
