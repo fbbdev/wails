@@ -5,6 +5,8 @@ import (
 	"log"
 
 	"github.com/wailsapp/wails/v3/pkg/application"
+	"github.com/wailsapp/wails/v3/pkg/runtime"
+	runtimebundle "github.com/wailsapp/wails/v3/pkg/runtime/full"
 )
 
 //go:embed assets/*
@@ -19,8 +21,10 @@ func main() {
 			ApplicationShouldTerminateAfterLastWindowClosed: true,
 		},
 		Assets: application.AssetOptions{
-			Handler: application.BundledAssetFileServer(assets),
+			Handler:    application.AssetFileServerFS(assets),
+			Middleware: runtimebundle.Full,
 		},
+		Bind: []application.Service{runtime.Service()},
 	})
 
 	app.NewWebviewWindowWithOptions(application.WebviewWindowOptions{

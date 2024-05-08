@@ -2,10 +2,10 @@ package main
 
 import (
 	"embed"
-	_ "embed"
 	"log"
 
 	"github.com/wailsapp/wails/v3/pkg/application"
+	runtimebundle "github.com/wailsapp/wails/v3/pkg/runtime/core"
 )
 
 //go:embed assets
@@ -17,7 +17,8 @@ func main() {
 		Name:        "Frameless Demo",
 		Description: "A demo of frameless windows",
 		Assets: application.AssetOptions{
-			Handler: application.BundledAssetFileServer(assets),
+			Handler:    application.AssetFileServerFS(assets),
+			Middleware: runtimebundle.Core,
 		},
 		Mac: application.MacOptions{
 			ApplicationShouldTerminateAfterLastWindowClosed: true,
