@@ -49,19 +49,22 @@ func (renderer *Renderer) ServiceFile(name string) string {
 // ModelsFile returns the standard name of a models file
 // with the appropriate extension.
 func (renderer *Renderer) ModelsFile() string {
-	return renderer.options.ModelsFilename + renderer.ext
+	//return renderer.options.ModelsFilename + renderer.ext
+	return "models" + renderer.ext
 }
 
 // InternalFile returns the standard name of an internal model file
 // with the appropriate extension.
 func (renderer *Renderer) InternalFile() string {
-	return renderer.options.InternalFilename + renderer.ext
+	//return renderer.options.InternalFilename + renderer.ext
+	return "internal" + renderer.ext
 }
 
 // IndexFile returns the standard name of a package index file
 // with the appropriate extension.
 func (renderer *Renderer) IndexFile() string {
-	return renderer.options.IndexFilename + renderer.ext
+	//return renderer.options.IndexFilename + renderer.ext
+	return "index" + renderer.ext
 }
 
 // Service renders binding code for the given service type to w.

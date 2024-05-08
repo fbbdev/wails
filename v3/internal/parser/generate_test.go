@@ -37,11 +37,11 @@ func TestGenerator(t *testing.T) {
 	tests := make([]*testParams, 1<<3)
 	for i := range tests {
 		options := &flags.GenerateBindingsOptions{
-			ModelsFilename:   "models",
-			InternalFilename: "internal",
-			IndexFilename:    "index",
+			//ModelsFilename:   "models",
+			//InternalFilename: "internal",
+			//IndexFilename:    "index",
 
-			UseBundledRuntime: true,
+			//UseBundledRuntime: true,
 
 			TS:            i&tsBit != 0,
 			UseInterfaces: i&useInterfacesBit != 0,
