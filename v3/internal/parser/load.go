@@ -35,9 +35,22 @@ func ResolveSystemPaths(buildFlags []string) (paths *config.SystemPaths, err err
 		panic("wails application package path matched multiple packages")
 	}
 
+	// Resolve wails runtime pkg path.
+	wailsRuntimePkgPaths, err := ResolvePatterns(buildFlags, config.WailsRuntimePkgPath)
+	if err != nil {
+		return
+	} else if len(wailsRuntimePkgPaths) < 1 {
+		err = ErrNoRuntimePackage
+		return
+	} else if len(wailsRuntimePkgPaths) > 1 {
+		// This should never happen...
+		panic("internal wails runtime package path matched multiple packages")
+	}
+
 	paths = &config.SystemPaths{
 		ContextPackage:     contextPkgPaths[0],
 		ApplicationPackage: wailsAppPkgPaths[0],
+		RuntimePackage:     wailsRuntimePkgPaths[0],
 	}
 	return
 }

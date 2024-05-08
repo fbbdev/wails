@@ -19,15 +19,6 @@ type module struct {
 	deferrals typeutil.Map
 }
 
-// Runtime returns the import path for the Wails JS runtime module.
-func (m *module) Runtime() string {
-	if m.UseBundledRuntime {
-		return "/wails/runtime.js"
-	} else {
-		return "@wailsio/runtime"
-	}
-}
-
 type deferralKind int
 
 const (

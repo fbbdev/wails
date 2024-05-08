@@ -19,6 +19,11 @@ var ErrNoContextPackage = errors.New("standard context package not found at cano
 // did not match any actual package.
 var ErrNoApplicationPackage = errors.New("Wails application package not found at canonical import path ('" + config.WailsAppPkgPath + "'): is the Wails v3 module properly installed?")
 
+// ErrNoRuntimePackage indicates that
+// the canonical path for the internal Wails runtime package
+// did not match any actual package.
+var ErrNoRuntimePackage = errors.New("internal Wails JS runtime package not found at canonical import path ('" + config.WailsRuntimePkgPath + "'): is the Wails v3 module properly installed?")
+
 // ErrBadApplicationPackage indicates that
 // the Wails application package has invalid content.
 var ErrBadApplicationPackage = errors.New("package " + config.WailsAppPkgPath + ": function NewService has wrong signature: is the Wails v3 module properly installed?")
