@@ -21,6 +21,7 @@ type GenerateBindingsOptions struct {
 	UseBundledRuntime bool   `name:"b" description:"Use the bundled runtime instead of writing out runtime code"`
 	UseNames          bool   `name:"names" description:"Use names instead of IDs for the binding calls"`
 	NoIndex           bool   `name:"noindex" description:"Do not generate JS/TS index files"`
+	NoRuntime         bool   `name:"noruntime" description:"Do not generate JS/TS files for the Wails runtime"`
 	GarbleMapFile     string `name:"garblemap" description:"A file containing the output of the 'garble map' command, to be used when generating binding code for garble builds"`
 	DryRun            bool   `name:"dry" description:"Do not write output files"`
 	Silent            bool   `name:"silent" description:"Silent mode"`

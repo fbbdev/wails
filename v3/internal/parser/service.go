@@ -10,8 +10,8 @@ import (
 // and generates JS/TS binding code
 // for the given service type object.
 func (generator *Generator) generateService(obj *types.TypeName) {
-	if generator.options.UseBundledRuntime {
-		// When using the bundled runtime, suppress output from runtime packages.
+	if generator.options.UseBundledRuntime || generator.options.NoRuntime {
+		// Suppress output from runtime packages.
 		if slices.Contains(generator.systemPaths.RuntimePackages, obj.Pkg().Path()) {
 			return
 		}

@@ -126,7 +126,7 @@ func (generator *Generator) Generate(patterns ...string) (stats *collect.Stats, 
 	}
 
 	// Inject core runtime dependency if required.
-	if !generator.options.UseBundledRuntime {
+	if !generator.options.UseBundledRuntime && !generator.options.NoRuntime {
 		patterns = slices.Clone(patterns)
 		patterns = append(patterns, config.WailsRuntimeCorePkgPath)
 	}
@@ -229,8 +229,8 @@ func (generator *Generator) Generate(patterns ...string) (stats *collect.Stats, 
 // included files and, if allowed by the options,
 // of an index file for the given package.
 func (generator *Generator) generateModelsIndexIncludes(info *collect.PackageInfo) {
-	if generator.options.UseBundledRuntime {
-		// When using the bundled runtime, suppress output from JS runtime packages.
+	if generator.options.UseBundledRuntime || generator.options.NoRuntime {
+		// Suppress output from JS runtime packages.
 		if slices.Contains(generator.systemPaths.RuntimePackages, info.Path) {
 			return
 		}
