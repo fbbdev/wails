@@ -16,7 +16,7 @@ func Bundle(next http.Handler) http.Handler {
 	startTime := time.Now()
 	return http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 		if req.URL.Path == "/wails/runtime.js" {
-			rw.Header().Set("Content-Type", "application/javascript")
+			rw.Header().Set("Content-Type", "text/javascript")
 			http.ServeContent(rw, req, "", startTime, bytes.NewReader(full.RuntimeJS))
 			return
 		}
