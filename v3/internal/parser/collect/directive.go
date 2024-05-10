@@ -45,12 +45,14 @@ func ParseDirective(comment string, directive string) string {
 // It returns the argument stripped of the prefix and the resulting condition.
 // If the condition is malformed, ParseCondition returns a non-nil error.
 func ParseCondition(argument string) (string, Condition, error) {
-	cond, arg, present := strings.Cut(argument, ":")
-	if !present {
-		return cond, Condition{true, true, true, true}, nil
+	trimmed := strings.TrimLeftFunc(argument, unicode.IsSpace)
+	if len(trimmed) < 3 || trimmed[2] != ':' {
+		return argument, Condition{true, true, true, true}, nil
 	}
 
-	if len(cond) != 2 || !strings.ContainsRune("*jt", rune(cond[0])) || !strings.ContainsRune("*ci", rune(cond[1])) {
+	cond, arg := trimmed[:2], trimmed[3:]
+
+	if !strings.ContainsRune("*jt", rune(cond[0])) || !strings.ContainsRune("*ci", rune(cond[1])) {
 		return argument,
 			Condition{true, true, true, true},
 			fmt.Errorf("invalid condition code '%s': expected format is '(*|j|t)(*|c|i)'", cond)
