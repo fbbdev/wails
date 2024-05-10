@@ -42,8 +42,11 @@ type Collector struct {
 
 	systemPaths *config.SystemPaths
 	options     *flags.GenerateBindingsOptions
-	scheduler   Scheduler
-	logger      config.Logger
+
+	fullRuntimeAvailable bool
+
+	scheduler Scheduler
+	logger    config.Logger
 }
 
 // NewCollector initialises a new Collector instance for the given package set.
@@ -60,13 +63,17 @@ func NewCollector(
 
 		systemPaths: systemPaths,
 		options:     options,
-		scheduler:   scheduler,
-		logger:      logger,
+
+		scheduler: scheduler,
+		logger:    logger,
 	}
 
-	// Register packages.
+	// Register packages and detect full runtime.
 	for _, pkg := range pkgs {
 		collector.pkgs[pkg.Types] = newPackageInfo(pkg, garbleMap[pkg.PkgPath], collector)
+		if pkg.PkgPath == systemPaths.FullRuntimePackage {
+			collector.fullRuntimeAvailable = true
+		}
 	}
 
 	return collector

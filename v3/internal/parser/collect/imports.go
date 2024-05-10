@@ -13,7 +13,12 @@ type (
 		// Self records the path of the importing package.
 		Self string
 
-		// Runtime records the import path of the runtime package relative to the importing package.
+		// Core records the import path of the core runtime package
+		// relative to the importing package.
+		Core string
+		// Runtime records the import path of the core or public
+		// runtime package, depending on availability,
+		// relative to the importing package.
 		Runtime string
 
 		// ImportModels records whether models from the current package may be needed.
@@ -44,17 +49,26 @@ type (
 func NewImportMap(importer *PackageInfo) *ImportMap {
 	var (
 		self      string
+		core      string
 		runtime   string
 		collector *Collector
 	)
 	if importer != nil {
 		self = importer.Path
 		collector = importer.collector
-		runtime = computeImportPath(self, collector.systemPaths.RuntimeCorePackage)
+
+		core = computeImportPath(self, collector.systemPaths.CoreRuntimePackage)
+
+		runtime = core
+		if collector.fullRuntimeAvailable {
+			runtime = computeImportPath(self, collector.systemPaths.FullRuntimePackage)
+		}
 	}
 
 	return &ImportMap{
-		Self:    self,
+		Self: self,
+
+		Core:    core,
 		Runtime: runtime,
 
 		External: make(map[string]ImportInfo),

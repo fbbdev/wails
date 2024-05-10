@@ -67,6 +67,9 @@ type PackageInfo struct {
 	// Injections holds a list of code lines to be injected
 	// into the package index file.
 	Injections []string
+	// ImportRuntime is true if the runtime package
+	// should be exposed to injected code with import name "$runtime".
+	ImportRuntime bool
 
 	// services records service types that have to be generated for this package.
 	// We rely upon [sync.Map] for atomic swapping support.
@@ -215,6 +218,9 @@ func (info *PackageInfo) Collect() *PackageInfo {
 
 					// Record injected line.
 					info.Injections = append(info.Injections, line)
+
+				case !info.ImportRuntime && IsDirective(comment.Text, "importRuntime"):
+					info.ImportRuntime = true
 
 				case pos.IsValid() && IsDirective(comment.Text, "include"):
 					// Check condition.

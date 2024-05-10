@@ -103,9 +103,11 @@ func (renderer *Renderer) Index(w io.Writer, index *collect.PackageIndex) error 
 		*collect.PackageIndex
 		*Renderer
 		*flags.GenerateBindingsOptions
+		Runtime string
 	}{
 		index,
 		renderer,
 		renderer.options,
+		collect.NewImportMap(index.Package).Runtime,
 	})
 }

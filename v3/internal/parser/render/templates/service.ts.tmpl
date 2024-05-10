@@ -20,10 +20,9 @@
  * @module
  */
 {{end}}
-{{- if $useBundle}}
-import {Call as $Call, Types as $Types} from "/wails/runtime.js";
-{{- else}}
-import {Call as $Call, Types as $Types} from "{{js $imports.Runtime}}/index.js";
+import {Call as $Call, Types as $Types} from {{if $useBundle}}"/wails/runtime.js"{{else}}"{{js $imports.Core}}/index.js"{{end}};
+{{- if and .Injections .ImportRuntime}}
+import * as $runtime from {{if $useBundle}}"/wails/runtime.js"{{else}}"{{js $imports.Runtime}}/index.js"{{end}};
 {{- end}}
 {{range $imports.External}}
 import * as {{jsimport .}} from "{{js .RelPath}}/{{js $models}}";

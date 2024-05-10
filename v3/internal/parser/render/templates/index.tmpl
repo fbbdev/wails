@@ -31,6 +31,9 @@ export {
 {{- if .Models}}
 export * from "./{{js $models}}";
 {{end}}
+{{- if and .Package.Injections .Package.ImportRuntime}}
+import * as $runtime from {{if .UseBundledRuntime}}"/wails/runtime.js"{{else}}"{{js .Runtime}}/index.js"{{end}};
+{{end}}
 {{- range .Package.Injections}}
 {{.}}
 {{- end}}{{if .Package.Injections}}

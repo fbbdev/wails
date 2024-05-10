@@ -28,6 +28,9 @@ type (
 		// Injections stores a list of JS code lines
 		// that should be injected into the generated file.
 		Injections []string
+		// ImportRuntime is true if the runtime package
+		// should be exposed to injected code with import name "$runtime".
+		ImportRuntime bool
 
 		collector *Collector
 		once      sync.Once
@@ -146,7 +149,8 @@ func (info *ServiceInfo) Collect() *ServiceInfo {
 				continue
 			}
 			for _, comment := range doc.List {
-				if IsDirective(comment.Text, "inject") {
+				switch {
+				case IsDirective(comment.Text, "inject"):
 					// Check condition.
 					line, cond, err := ParseCondition(ParseDirective(comment.Text, "inject"))
 					if err != nil {
@@ -164,6 +168,9 @@ func (info *ServiceInfo) Collect() *ServiceInfo {
 
 					// Record injected line.
 					info.Injections = append(info.Injections, line)
+
+				case !info.ImportRuntime && IsDirective(comment.Text, "importRuntime"):
+					info.ImportRuntime = true
 				}
 			}
 		}
