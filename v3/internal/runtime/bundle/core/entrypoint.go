@@ -1,3 +1,5 @@
+//go:build bundling
+
 //wails:inject export * from "../../core/index.js";
 package core
 

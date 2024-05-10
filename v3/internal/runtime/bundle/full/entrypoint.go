@@ -1,3 +1,5 @@
+//go:build bundling
+
 //wails:inject export * from "../../../../pkg/runtime/index.js";
 //wails:inject
 //wails:inject import * as runtime from "../../../../pkg/runtime/index.js";

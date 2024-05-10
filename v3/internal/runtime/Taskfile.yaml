@@ -40,7 +40,7 @@ tasks:
     internal: true
     cmds:
       - rm -rf {{.BUNDLE_DIR}}/{{.BUILD_DIR}}
-      - wails3 generate bindings -v -d {{.BUNDLE_DIR}}/{{.BUILD_DIR}} {{.BUNDLE_DIR}}
+      - wails3 generate bindings -f "-tags bundling" -v -d {{.BUNDLE_DIR}}/{{.BUILD_DIR}} {{.BUNDLE_DIR}}
 
   build:all:
     internal: true
