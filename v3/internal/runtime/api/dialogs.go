@@ -6,10 +6,17 @@ import (
 	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
+//wails:inject t*:export type {
+//wails:inject t*:    Button,
+//wails:inject t*:    FileFilter,
+//wails:inject t*:    MessageDialogOptions,
+//wails:inject t*:    OpenFileDialogOptions,
+//wails:inject t*:    SaveFileDialogOptions
+//wails:inject t*:} from "./models.ts";
 type Dialogs struct{}
 
 type Button = struct {
-	*application.Button
+	application.Button
 }
 
 type FileFilter = struct {
@@ -76,7 +83,7 @@ func messageDialog(wnd application.Window, options *MessageDialogOptions, dialog
 	} else {
 		options.MessageDialogOptions.Buttons = make([]*application.Button, len(options.Buttons))
 		for i, btn := range options.Buttons {
-			options.MessageDialogOptions.Buttons[i] = btn.Button
+			options.MessageDialogOptions.Buttons[i] = &btn.Button
 		}
 	}
 

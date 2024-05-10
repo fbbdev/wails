@@ -18,22 +18,22 @@ tasks:
 
   build:core:
     deps:
-      - task: build:bundle
+      - task: build:generic
         vars: { BUNDLE_DIR: ./bundle/core }
 
   build:full:
     deps:
-      - task: build:bundle
+      - task: build:generic
         vars: { BUNDLE_DIR: ./bundle/full }
 
-  build:bundle:
+  build:generic:
     internal: true
     deps:
       - update
     cmds:
       - task: generate
         vars: { BUNDLE_DIR: "{{.BUNDLE_DIR}}" }
-      - task: build:all
+      - task: bundle
         vars: { BUNDLE_DIR: "{{.BUNDLE_DIR}}" }
 
   generate:
@@ -42,20 +42,20 @@ tasks:
       - rm -rf {{.BUNDLE_DIR}}/{{.BUILD_DIR}}
       - wails3 generate bindings -f "-tags bundling" -v -d {{.BUNDLE_DIR}}/{{.BUILD_DIR}} {{.BUNDLE_DIR}}
 
-  build:all:
+  bundle:
     internal: true
     deps:
-      - task: build:debug
+      - task: bundle:debug
         vars: { BUNDLE_DIR: "{{.BUNDLE_DIR}}" }
-      - task: build:production
+      - task: bundle:production
         vars: { BUNDLE_DIR: "{{.BUNDLE_DIR}}" }
 
-  build:debug:
+  bundle:debug:
     internal: true
     cmds:
       - npx esbuild@latest {{.BUNDLE_DIR}}/{{.BUILD_DIR}}/github.com/wailsapp/wails/v3/internal/runtime/{{.BUNDLE_DIR}}/index.js --format=esm --bundle --tree-shaking=true --sourcemap=inline --outfile={{.BUNDLE_DIR}}/runtime.debug.js --define:DEBUG=true
 
-  build:production:
+  bundle:production:
     internal: true
     cmds:
       - npx esbuild@latest {{.BUNDLE_DIR}}/{{.BUILD_DIR}}/github.com/wailsapp/wails/v3/internal/runtime/{{.BUNDLE_DIR}}/index.js --format=esm --bundle --tree-shaking=true --minify --outfile={{.BUNDLE_DIR}}/runtime.js --define:DEBUG=false --drop:console

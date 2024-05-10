@@ -6,8 +6,16 @@ import (
 	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
-//wails:inject j*:import * as self from "./window.js";
-//wails:inject t*:import * as self from "./window.ts";
+//wails:inject t*:export type {
+//wails:inject t*:    Position,
+//wails:inject t*:    RGBA,
+//wails:inject t*:    LRTB,
+//wails:inject t*:    Screen,
+//wails:inject t*:    Size,
+//wails:inject t*:    Rect,
+//wails:inject t*:} from "./models.ts";
+//wails:inject t*:
+//wails:inject **:import * as self from "./window.js";
 //wails:inject
 //wails:inject j*:/** @type {any} */
 //wails:inject j*:let thisWindow = null;

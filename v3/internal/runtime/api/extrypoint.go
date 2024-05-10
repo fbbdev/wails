@@ -1,6 +1,6 @@
-//wails:internal
 //wails:include *.js
-//wails:inject export * as WML from "./wml.js";
+//wails:inject import * as WML from "./wml.js";
+//wails:inject export { WML };
 package api
 
 import (

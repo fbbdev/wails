@@ -6,6 +6,11 @@ import (
 	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
+//wails:inject t*:export type {
+//wails:inject t*:    Screen,
+//wails:inject t*:    Size,
+//wails:inject t*:    Rect,
+//wails:inject t*:} from "./models.ts";
 type Screens struct{}
 
 type Screen = struct {
