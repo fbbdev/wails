@@ -6,7 +6,6 @@ import (
 
 	"github.com/wailsapp/wails/v3/pkg/application"
 	runtimeapi "github.com/wailsapp/wails/v3/pkg/runtime"
-	runtimebundle "github.com/wailsapp/wails/v3/pkg/runtime/bundle"
 )
 
 //go:embed assets/*
@@ -28,7 +27,7 @@ func main() {
 		},
 		Assets: application.AssetOptions{
 			Handler:    application.AssetFileServerFS(assets),
-			Middleware: runtimebundle.Full,
+			Middleware: runtimeapi.Bundle,
 		},
 		Bind: []application.Service{
 			runtimeapi.Service,

@@ -8,7 +8,6 @@ import (
 	"github.com/wailsapp/wails/v3/pkg/application"
 	"github.com/wailsapp/wails/v3/pkg/events"
 	runtimeapi "github.com/wailsapp/wails/v3/pkg/runtime"
-	runtimebundle "github.com/wailsapp/wails/v3/pkg/runtime/bundle"
 )
 
 //go:embed assets
@@ -21,7 +20,7 @@ func main() {
 		Description: "A demo of the Events API",
 		Assets: application.AssetOptions{
 			Handler:    application.AssetFileServerFS(assets),
-			Middleware: runtimebundle.Full,
+			Middleware: runtimeapi.Bundle,
 		},
 		Bind: []application.Service{
 			runtimeapi.Service,

@@ -5,7 +5,7 @@ import (
 	"log"
 
 	"github.com/wailsapp/wails/v3/pkg/application"
-	runtimebundle "github.com/wailsapp/wails/v3/pkg/runtime/bundle"
+	runtimecore "github.com/wailsapp/wails/v3/pkg/runtime/core"
 )
 
 //go:embed assets
@@ -18,7 +18,7 @@ func main() {
 		Description: "A demo of frameless windows",
 		Assets: application.AssetOptions{
 			Handler:    application.AssetFileServerFS(assets),
-			Middleware: runtimebundle.Core,
+			Middleware: runtimecore.Bundle,
 		},
 		Mac: application.MacOptions{
 			ApplicationShouldTerminateAfterLastWindowClosed: true,
