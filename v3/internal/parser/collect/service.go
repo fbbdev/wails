@@ -116,6 +116,16 @@ func (info *ServiceInfo) Collect() *ServiceInfo {
 		//     which should be far from average.
 		mset := typeutil.IntuitiveMethodSet(obj.Type(), nil)
 
+		// Retrieve possibly garbled package path.
+		pkg := collector.Package(obj.Pkg())
+		pkgPath := pkg.GarbledPath
+		if pkg.Name == "main" {
+			// reflect.Method.PkgPath is always "main" for the main package.
+			// This should not cause collisions because main packages
+			// cannot be imported.
+			pkgPath = "main"
+		}
+
 		// Collect method information.
 		info.Methods = make([]*ServiceMethodInfo, 0, len(mset))
 		for _, sel := range mset {
@@ -124,7 +134,7 @@ func (info *ServiceInfo) Collect() *ServiceInfo {
 				continue
 			}
 
-			methodInfo := info.collectMethod(sel.Obj().(*types.Func))
+			methodInfo := info.collectMethod(pkgPath, sel.Obj().(*types.Func))
 			if methodInfo != nil {
 				info.Methods = append(info.Methods, methodInfo)
 			}
@@ -170,9 +180,8 @@ var typeAny = types.Universe.Lookup("any").Type().Underlying()
 
 // collectMethod collects and returns information about a service method.
 // It is intended to be called only by ServiceInfo.Collect.
-func (info *ServiceInfo) collectMethod(method *types.Func) *ServiceMethodInfo {
+func (info *ServiceInfo) collectMethod(pkgPath string, method *types.Func) *ServiceMethodInfo {
 	collector := info.collector
-	obj := info.Object().(*types.TypeName)
 
 	signature, _ := method.Type().(*types.Signature)
 	if signature == nil {
@@ -181,16 +190,15 @@ func (info *ServiceInfo) collectMethod(method *types.Func) *ServiceMethodInfo {
 		return nil
 	}
 
-	// Compute fully qualified name.
-	path := obj.Pkg().Path()
-	if obj.Pkg().Name() == "main" {
-		// reflect.Method.PkgPath is always "main" for the main package.
-		// This should not cause collisions because
-		// other main packages are not importable.
-		path = "main"
+	// Retrieve possibly garbled method name.
+	pkg := collector.Package(method.Pkg())
+	methodName := method.Name()
+	if name, garbled := pkg.GarbledObjects[method]; garbled {
+		methodName = name
 	}
 
-	fqn := path + "." + obj.Name() + "." + method.Name()
+	// Compute and hash fully qualified name.
+	fqn := pkgPath + "." + info.GarbledName + "." + methodName
 	id, _ := hash.Fnv(fqn)
 
 	methodInfo := &ServiceMethodInfo{
@@ -217,7 +225,7 @@ func (info *ServiceInfo) collectMethod(method *types.Func) *ServiceMethodInfo {
 				if err != nil {
 					collector.logger.Errorf(
 						"%s: invalid value '%s' in `wails:id` directive: expected a valid uint32 value",
-						collector.Package(method.Pkg()).Fset.Position(comment.Pos()),
+						pkg.Fset.Position(comment.Pos()),
 						idString,
 					)
 					continue
@@ -226,9 +234,9 @@ func (info *ServiceInfo) collectMethod(method *types.Func) *ServiceMethodInfo {
 				// Announce and record alias.
 				collector.logger.Infof(
 					"package %s: method %s.%s: default ID %s replaced by %d",
-					path,
-					obj.Name(),
-					method.Name(),
+					pkgPath,
+					info.Name,
+					methodInfo.Name,
 					methodInfo.ID,
 					idValue,
 				)
@@ -269,7 +277,7 @@ func (info *ServiceInfo) collectMethod(method *types.Func) *ServiceMethodInfo {
 
 			collector.logger.Warningf(
 				"%s: parameter %s has non-empty interface type %s: this is not supported by encoding/json and will likely result in runtime errors",
-				collector.Package(method.Pkg()).Fset.Position(param.Pos()),
+				pkg.Fset.Position(param.Pos()),
 				paramName,
 				param.Type(),
 			)

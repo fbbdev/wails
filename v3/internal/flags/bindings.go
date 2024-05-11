@@ -1,7 +1,10 @@
 package flags
 
 import (
+	"encoding/json"
 	"errors"
+	"fmt"
+	"os"
 	"slices"
 	"strings"
 	"unicode/utf8"
@@ -14,10 +17,11 @@ type GenerateBindingsOptions struct {
 	InternalFilename  string `name:"internal" description:"File name for unexported JS/TS models (excluding the extension)" default:"internal"`
 	IndexFilename     string `name:"index" description:"File name for JS/TS package indexes (excluding the extension)" default:"index"`
 	TS                bool   `name:"ts" description:"Generate Typescript bindings"`
-	UseInterfaces     bool   `name:"i" description:"Generate Typescript interfaces instead of classes"`
+	UseInterfaces     bool   `name:"i" description:"Generate Typescript interfaces instead of classes (incompatible with -garble)"`
 	UseBundledRuntime bool   `name:"b" description:"Use the bundled runtime instead of importing the npm package"`
 	UseNames          bool   `name:"names" description:"Use names instead of IDs for the binding calls"`
 	NoIndex           bool   `name:"noindex" description:"Do not generate JS/TS index files"`
+	GarbleMapFile     string `name:"garblemap" description:"A file containing the output of the 'garble map' command, to be used when generating binding code for garble builds (incompatible with -i)"`
 	DryRun            bool   `name:"dry" description:"Do not write output files"`
 	Silent            bool   `name:"silent" description:"Silent mode"`
 	Verbose           bool   `name:"v" description:"Enable debug output"`
@@ -40,6 +44,36 @@ func isQuote(r rune) bool {
 
 func isQuoteOrWhitespace(r rune) bool {
 	return isQuote(r) || isWhitespace(r)
+}
+
+type (
+	GarbleMap = map[string]*GarblePackageInfo
+
+	GarblePackageInfo struct {
+		Path    string            `json:"path"`
+		Objects map[string]string `json:"objects"`
+	}
+)
+
+func (options *GenerateBindingsOptions) GarbleMap() (gm GarbleMap, err error) {
+	if options.GarbleMapFile == "" {
+		return nil, nil
+	}
+
+	file, err := os.Open(options.GarbleMapFile)
+	if err != nil {
+		err = fmt.Errorf("%s: %v", options.GarbleMapFile, err)
+		return
+	}
+	defer file.Close()
+
+	gm = make(GarbleMap)
+	err = json.NewDecoder(file).Decode(&gm)
+	if err != nil {
+		err = fmt.Errorf("%s: %v", options.GarbleMapFile, err)
+	}
+
+	return
 }
 
 func (options *GenerateBindingsOptions) BuildFlags() (flags []string, err error) {

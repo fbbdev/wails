@@ -109,7 +109,7 @@ func isjsdocobj(model *collect.ModelInfo) bool {
 	}
 	for _, decl := range model.Fields {
 		for _, field := range decl {
-			if !isjsdocid(field.JsonName) {
+			if !isjsdocid(field.JSName) {
 				return false
 			}
 		}

@@ -11,13 +11,16 @@ import (
 	"sync"
 	"sync/atomic"
 
+	"github.com/wailsapp/wails/v3/internal/flags"
 	"golang.org/x/tools/go/packages"
+	"golang.org/x/tools/go/types/objectpath"
 )
 
 // PackageInfo records information about a package.
 //
-// Read accesses to fields Path, Name, Types, TypesInfo, Fset
-// are safe at any time without any synchronisation.
+// Read accesses to fields Path, GarbledPath, Name,
+// Types, TypesInfo, GarbledObjects, Fset are safe at any time
+// without any synchronisation.
 //
 // Read accesses to all other fields are only safe
 // if a call to [PackageInfo.Collect] has completed before the access,
@@ -29,12 +32,22 @@ type PackageInfo struct {
 	// Path holds the canonical path of the described package.
 	Path string
 
+	// GarbledPath holds the path of the described package as transformed
+	// by the garble build tool. If no garble info has been provided,
+	// this is identical to path for convenience.
+	GarbledPath string
+
 	// Name holds the import name of the described package.
 	Name string
 
 	// Types and TypesInfo hold type information for this package.
 	Types     *types.Package
 	TypesInfo *types.Info
+
+	// GarbledObjects maps objects to their names as transformed
+	// by the garble build tool. Only objects that are actually
+	// subject to garbling appear in this map.
+	GarbledObjects map[types.Object]string
 
 	// Fset holds the FileSet that was used to parse this package.
 	Fset *token.FileSet
@@ -72,9 +85,11 @@ type PackageInfo struct {
 	once      sync.Once
 }
 
-func newPackageInfo(pkg *packages.Package, collector *Collector) *PackageInfo {
-	return &PackageInfo{
-		Path: pkg.PkgPath,
+func newPackageInfo(pkg *packages.Package, garbleInfo *flags.GarblePackageInfo, collector *Collector) *PackageInfo {
+	info := &PackageInfo{
+		Path:        pkg.PkgPath,
+		GarbledPath: pkg.PkgPath,
+
 		Name: pkg.Name,
 
 		Types:     pkg.Types,
@@ -85,6 +100,24 @@ func newPackageInfo(pkg *packages.Package, collector *Collector) *PackageInfo {
 
 		collector: collector,
 	}
+
+	if garbleInfo == nil {
+		return info
+	}
+
+	info.GarbledPath = garbleInfo.Path
+	info.GarbledObjects = make(map[types.Object]string)
+
+	for path, name := range garbleInfo.Objects {
+		obj, err := objectpath.Object(info.Types, objectpath.Path(path))
+		if err == nil {
+			info.GarbledObjects[obj] = name
+		} else {
+			collector.logger.Warningf("package %s: garble information contains invalid object path '%s' (%v); ensure the provided garble map is up to date", pkg.PkgPath, path, err)
+		}
+	}
+
+	return info
 }
 
 // Package retrieves the the unique [PackageInfo] instance, if any,

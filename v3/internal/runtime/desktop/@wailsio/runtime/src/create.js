@@ -95,31 +95,34 @@ export function Nullable(element) {
 }
 
 /**
- * Struct takes an object mapping field names to creation functions
- * and returns an in-place creation function for a struct.
- * @template {{ [_: string]: ((any) => any) }} T
- * @template {{ [Key in keyof T]?: ReturnType<T[Key]> }} U
+ * Struct takes an object mapping field names to (possibly garbled) names
+ * and creation functions and returns an in-place creation function for a struct.
+ * @template {{ [_: string]: { f: string, c: ((any) => any) } }} T
+ * @template {{ [Key in keyof T]?: ReturnType<T[Key]["c"]> }} U
  * @param {T} createField
  * @returns {(any) => U}
  */
 export function Struct(createField) {
-    let allAny = true;
+    let needsCreate = false;
     for (const name in createField) {
-        if (createField[name] !== Any) {
-            allAny = false;
+        const fieldInfo = createField[name];
+        if (fieldInfo.c !== Any || fieldInfo.f !== name) {
+            needsCreate = true;
             break;
         }
     }
-    if (allAny) {
+    if (!needsCreate) {
         return Any;
     }
 
     return (source) => {
+        const result = {};
         for (const name in createField) {
-            if (name in source) {
-                source[name] = createField[name](source[name]);
+            const fieldInfo = createField[name];
+            if (fieldInfo.f in source) {
+                result[name] = fieldInfo.c(source[fieldInfo.f]);
             }
         }
-        return source;
+        return result;
     };
 }

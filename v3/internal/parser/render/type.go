@@ -256,7 +256,7 @@ func (m *module) renderStructType(typ *types.Struct) string {
 		}
 
 		builder.WriteRune('"')
-		template.JSEscape(&builder, []byte(field.JsonName))
+		template.JSEscape(&builder, []byte(field.JSName))
 		builder.WriteRune('"')
 
 		if field.Optional {

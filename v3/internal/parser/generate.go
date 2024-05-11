@@ -102,6 +102,18 @@ func (generator *Generator) Generate(patterns ...string) (stats *collect.Stats, 
 		return
 	}
 
+	// Load garble map, if any.
+	garbleMap, err := generator.options.GarbleMap()
+	if err != nil {
+		return
+	}
+
+	// Check for invalid configuration.
+	if garbleMap != nil && generator.options.UseInterfaces {
+		err = fmt.Errorf("garble remapping is not available in interface mode")
+		return
+	}
+
 	// Start package loading feedback.
 	var lpkgMutex sync.Mutex
 	generator.logger.Statusf("Loading packages...")
@@ -146,8 +158,9 @@ func (generator *Generator) Generate(patterns ...string) (stats *collect.Stats, 
 	}
 
 	// Initialise subcomponents.
-	generator.collector = collect.NewCollector(pkgs, systemPaths, generator.options, &generator.scheduler, generator.logger)
+	generator.collector = collect.NewCollector(pkgs, systemPaths, generator.options, garbleMap, &generator.scheduler, generator.logger)
 	generator.renderer = render.NewRenderer(generator.options, generator.collector)
+	garbleMap = nil
 
 	// Update status.
 	generator.logger.Statusf("Looking for services...")

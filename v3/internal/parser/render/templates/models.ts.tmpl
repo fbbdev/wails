@@ -103,15 +103,15 @@ export {{if $isInterface}}interface{{else}}class{{end}} {{jsid $model.Name}}{{$t
     {{- jsdoc $field.Decl.Doc.Text "    "}}
      */
     {{- end}}
-    "{{js $field.JsonName}}"{{if $field.Optional}}?{{end}}: {{$module.JSFieldType $field.StructField}};
+    "{{js $field.JSName}}"{{if $field.Optional}}?{{end}}: {{$module.JSFieldType $field.StructField}};
     {{- end}}{{end}}
 {{- if not $isInterface}}
 
     /** Creates a new {{jsid $model.Name}} instance. */
     constructor($$source: Partial<{{jsid $model.Name}}{{$typeParamList}}> = {}) {
     {{- range $spec := $model.Fields}}{{range $i, $field := $spec}}{{if not .Optional}}
-        if (!("{{js $field.JsonName}}" in $$source)) {
-            this["{{js $field.JsonName}}"] = {{$module.JSDefault $field.Type $field.Quoted}};
+        if (!("{{js $field.JSName}}" in $$source)) {
+            this["{{js $field.JSName}}"] = {{$module.JSDefault $field.Type $field.Quoted}};
         }
     {{- end}}{{end}}{{end}}
 
@@ -136,7 +136,7 @@ export {{if $isInterface}}interface{{else}}class{{end}} {{jsid $model.Name}}{{$t
                 {{- if $typeParamList}} ($$source?: any) =>{{end}} {{jsid $model.Name}}{{$typeParamList}} {
         {{- range $i, $spec := $model.Fields}}{{range $j, $field := $spec}}
             {{- $create := ($module.JSCreateWithParams $field.Type $createParamList)}}
-            {{- if ne $create "$Create.Any"}}
+            {{- if or (ne $field.JSName $field.JsonName) (ne $create "$Create.Any")}}
         const $$createField{{$i}}_{{$j}} = {{$create}};
             {{- end}}
         {{- end}}{{end}}
@@ -145,15 +145,18 @@ export {{if $isInterface}}interface{{else}}class{{end}} {{jsid $model.Name}}{{$t
             {{- $indent = "    "}}
         return ($$source: any = {}) => {
         {{- end}}
-        {{$indent}}let $$parsedSource = typeof $$source === 'string' ? JSON.parse($$source) : $$source;
+        {{$indent}}const $$parsedSource = typeof $$source === 'string' ? JSON.parse($$source) : $$source;
+        {{$indent}}const $$result = (new {{jsid $model.Name}}()) as any;
         {{- range $i, $spec := $model.Fields}}{{range $j, $field := $spec}}
-            {{- if $module.NeedsCreate $field.Type}}
         {{$indent}}if ("{{js $field.JsonName}}" in $$parsedSource) {
-        {{$indent}}    $$parsedSource["{{js $field.JsonName}}"] = $$createField{{$i}}_{{$j}}($$parsedSource["{{js $field.JsonName}}"]);
-        {{$indent -}} }
+            {{- if or (ne $field.JSName $field.JsonName) ($module.NeedsCreate $field.Type)}}
+        {{$indent}}    $$result["{{js $field.JSName}}"] = $$createField{{$i}}_{{$j}}($$parsedSource["{{js $field.JsonName}}"]);
+            {{- else}}
+        {{$indent}}    $$result["{{js $field.JSName}}"] = $$parsedSource["{{js $field.JsonName}}"];
             {{- end}}
+        {{$indent -}} }
         {{- end}}{{end}}
-        {{$indent}}return new {{jsid $model.Name}}{{$typeParamList}}($$parsedSource as Partial<{{jsid $model.Name}}{{$typeParamList}}>);
+        {{$indent}}return $$result;
         {{- if $typeParamList}}
         };
         {{- end}}

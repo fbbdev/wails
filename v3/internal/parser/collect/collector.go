@@ -47,7 +47,14 @@ type Collector struct {
 }
 
 // NewCollector initialises a new Collector instance for the given package set.
-func NewCollector(pkgs []*packages.Package, systemPaths *config.SystemPaths, options *flags.GenerateBindingsOptions, scheduler Scheduler, logger config.Logger) *Collector {
+func NewCollector(
+	pkgs []*packages.Package,
+	systemPaths *config.SystemPaths,
+	options *flags.GenerateBindingsOptions,
+	garbleMap flags.GarbleMap,
+	scheduler Scheduler,
+	logger config.Logger,
+) *Collector {
 	collector := &Collector{
 		pkgs: make(map[*types.Package]*PackageInfo, len(pkgs)),
 
@@ -59,7 +66,7 @@ func NewCollector(pkgs []*packages.Package, systemPaths *config.SystemPaths, opt
 
 	// Register packages.
 	for _, pkg := range pkgs {
-		collector.pkgs[pkg.Types] = newPackageInfo(pkg, collector)
+		collector.pkgs[pkg.Types] = newPackageInfo(pkg, garbleMap[pkg.PkgPath], collector)
 	}
 
 	return collector

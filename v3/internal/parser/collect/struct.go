@@ -33,7 +33,8 @@ type (
 
 	// FieldInfo represents a single field in a struct.
 	StructField struct {
-		JsonName string // Avoid collisions with [FieldInfo.Name].
+		JSName   string
+		JsonName string // May differ from JSName when the type has been garbled.
 		Type     types.Type
 		Optional bool
 		Quoted   bool
@@ -196,6 +197,7 @@ func (info *StructInfo) Collect() *StructInfo {
 						finfo := fieldData{
 							StructField: &StructField{
 								JsonName: name,
+								JSName:   name,
 								Type:     field.Type(),
 								Optional: optional,
 								Quoted:   quoted,
@@ -207,7 +209,14 @@ func (info *StructInfo) Collect() *StructInfo {
 						}
 
 						if name == "" {
-							finfo.JsonName = field.Name()
+							// No JSON tag present, or it didn't affect the name.
+							finfo.JSName = field.Name()
+							finfo.JsonName = finfo.JSName
+							if pkg := info.collector.Package(field.Pkg()); pkg != nil {
+								if name, garbled := pkg.GarbledObjects[field]; garbled {
+									finfo.JsonName = name
+								}
+							}
 						}
 
 						fields = append(fields, finfo)

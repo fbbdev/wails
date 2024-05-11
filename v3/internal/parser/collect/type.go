@@ -16,6 +16,11 @@ import (
 type TypeInfo struct {
 	Name string
 
+	// GarbledName holds the name of the described type as transformed
+	// by the garble build tool. If no garble info has been provided,
+	// this is identical to Name for convenience.
+	GarbledName string
+
 	// Alias is true for type aliases.
 	Alias bool
 
@@ -82,6 +87,8 @@ func (info *TypeInfo) Collect() *TypeInfo {
 		collector := info.collector
 
 		info.Name = info.obj.Name()
+		info.GarbledName = info.Name
+
 		info.Alias = info.obj.IsAlias()
 
 		path := collector.findDeclaration(info.obj)
@@ -100,6 +107,11 @@ func (info *TypeInfo) Collect() *TypeInfo {
 				info.Def = info.obj.Type().Underlying()
 			}
 			return
+		}
+
+		// Retrieve garbled name.
+		if name, ok := collector.Package(info.obj.Pkg()).GarbledObjects[info.obj]; ok {
+			info.GarbledName = name
 		}
 
 		// path shape: *ast.TypeSpec, *ast.GenDecl, *ast.File

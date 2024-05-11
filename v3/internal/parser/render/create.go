@@ -61,7 +61,7 @@ func (m *module) needsCreateImpl(typ types.Type, visited map[*types.TypeName]boo
 		info.Collect()
 
 		for _, field := range info.Fields {
-			if m.needsCreateImpl(field.Type, visited) {
+			if field.JSName != field.JsonName || m.needsCreateImpl(field.Type, visited) {
 				return true
 			}
 		}
@@ -176,7 +176,8 @@ func (m *module) JSCreateWithParams(typ types.Type, params string) string {
 
 		postpone := false
 		for _, field := range info.Fields {
-			if m.JSCreateWithParams(field.Type, params) != "$Create.Any" {
+			createField := m.JSCreateWithParams(field.Type, params)
+			if field.JSName != field.JsonName || createField != "$Create.Any" {
 				postpone = true
 			}
 		}
@@ -277,17 +278,19 @@ function $$initCreateType%d(...args) {
 			builder.WriteString(pre)
 			builder.WriteString("$Create.Struct({")
 
-			for _, field := range info.Fields {
+			for i, field := range info.Fields {
 				createField := m.JSCreateWithParams(field.Type, pp.params)
-				if createField == "$Create.Any" {
-					continue
-				}
 
+				if i > 0 {
+					builder.WriteRune(',')
+				}
 				builder.WriteString("\n    \"")
+				template.JSEscape(&builder, []byte(field.JSName))
+				builder.WriteString("\": { f: \"")
 				template.JSEscape(&builder, []byte(field.JsonName))
-				builder.WriteString("\": ")
+				builder.WriteString("\", c: ")
 				builder.WriteString(createField)
-				builder.WriteRune(',')
+				builder.WriteString(" }")
 			}
 
 			if len(info.Fields) > 0 {
