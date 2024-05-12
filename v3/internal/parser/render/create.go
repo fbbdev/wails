@@ -3,6 +3,7 @@ package render
 import (
 	"fmt"
 	"go/types"
+	"slices"
 	"strings"
 	"text/template"
 
@@ -99,28 +100,25 @@ func (m *module) JSCreateWithParams(typ types.Type, params string) string {
 		return m.JSCreateWithParams(types.Unalias(typ), params)
 
 	case *types.Array, *types.Pointer:
-		pp, ok := m.postponedCreates.At(typ).(*postponed)
-		if ok {
-			return fmt.Sprintf("$$createType%d%s", pp.index, params)
+		df := m.deferred(create, typ)
+		if df != "" {
+			return df
 		}
 
 		createElement := m.JSCreateWithParams(typ.(interface{ Elem() types.Type }).Elem(), params)
-		if createElement != "$Create.Any" {
-			pp = &postponed{m.postponedCreates.Len(), params}
-			m.postponedCreates.Set(typ, pp)
-			return fmt.Sprintf("$$createType%d%s", pp.index, params)
+		if createElement != "$Types.CreateAny" {
+			return m.defer_(create, typ, params)
 		}
 
 	case *types.Map:
-		pp, ok := m.postponedCreates.At(typ).(*postponed)
-		if !ok {
+		df := m.deferred(create, typ)
+		if df == "" {
 			m.JSCreateWithParams(t.Key(), params)
 			m.JSCreateWithParams(t.Elem(), params)
-			pp = &postponed{m.postponedCreates.Len(), params}
-			m.postponedCreates.Set(typ, pp)
+			df = m.defer_(create, typ, params)
 		}
 
-		return fmt.Sprintf("$$createType%d%s", pp.index, params)
+		return df
 
 	case *types.Named:
 		if t.Obj().Pkg() == nil {
@@ -132,107 +130,107 @@ func (m *module) JSCreateWithParams(typ types.Type, params string) string {
 			break
 		}
 
-		pp, ok := m.postponedCreates.At(typ).(*postponed)
-		if !ok {
+		df := m.deferred(create, typ)
+		if df == "" {
 			if t.TypeArgs() != nil && t.TypeArgs().Len() > 0 {
-				// Postpone type args.
+				// Defer type args.
 				for i := range t.TypeArgs().Len() {
 					m.JSCreateWithParams(t.TypeArgs().At(i), params)
 				}
 			}
 
-			pp = &postponed{m.postponedCreates.Len(), params}
-			m.postponedCreates.Set(typ, pp)
+			df = m.defer_(create, typ, params)
 
 			if !collect.IsClass(typ) {
 				m.JSCreateWithParams(t.Underlying(), params)
 			}
 		}
 
-		return fmt.Sprintf("$$createType%d%s", pp.index, params)
+		return df
 
 	case *types.Slice:
 		if types.Identical(typ, typeByteSlice) {
-			return "$Create.ByteSlice"
+			return "$Types.CreateByteSlice"
 		}
 
-		pp, ok := m.postponedCreates.At(typ).(*postponed)
-		if !ok {
+		df := m.deferred(create, typ)
+		if df == "" {
 			m.JSCreateWithParams(t.Elem(), params)
-			pp = &postponed{m.postponedCreates.Len(), params}
-			m.postponedCreates.Set(typ, pp)
+			df = m.defer_(create, typ, params)
 		}
 
-		return fmt.Sprintf("$$createType%d%s", pp.index, params)
+		return df
 
 	case *types.Struct:
-		pp, ok := m.postponedCreates.At(typ).(*postponed)
-		if ok {
-			return fmt.Sprintf("$$createType%d%s", pp.index, params)
+		df := m.deferred(create, typ)
+		if df != "" {
+			return df
 		}
 
 		info := m.collector.Struct(t)
 		info.Collect()
 
-		postpone := false
+		defer_ := false
 		for _, field := range info.Fields {
 			createField := m.JSCreateWithParams(field.Type, params)
-			if field.JSName != field.JsonName || createField != "$Create.Any" {
-				postpone = true
+			if field.JSName != field.JsonName || createField != "$Types.CreateAny" {
+				defer_ = true
 			}
 		}
 
-		if postpone {
-			pp = &postponed{m.postponedCreates.Len(), params}
-			m.postponedCreates.Set(typ, pp)
-			return fmt.Sprintf("$$createType%d%s", pp.index, params)
+		if defer_ {
+			return m.defer_(create, typ, params)
 		}
 
 	case *types.TypeParam:
 		return fmt.Sprintf("$$createParam%s", typeparam(t.Index(), t.Obj().Name()))
 	}
 
-	return "$Create.Any"
+	return "$Types.CreateAny"
 }
 
-// PostponedCreates returns the list of postponed create functions
+// DeferredCreates returns the list of deferred create functions
 // for the given module.
-func (m *module) PostponedCreates() []string {
-	result := make([]string, m.postponedCreates.Len())
+func (m *module) DeferredCreates() []string {
+	result := make([]string, m.deferrals.Len())
 
-	m.postponedCreates.Iterate(func(key types.Type, value any) {
-		pp := value.(*postponed)
+	m.deferrals.Iterate(func(key types.Type, value any) {
+		df := value.(*deferral)
+		if !df.kinds[create] {
+			return
+		}
 
 		pre := ""
-		if pp.params != "" {
-			pre = pp.params + " => "
+		params := df.params[create]
+		if params != "" {
+			pre = params + " => "
 		}
 
 		switch t := key.(type) {
 		case *types.Array, *types.Slice:
-			result[pp.index] = fmt.Sprintf("%s$Create.Array(%s)", pre, m.JSCreateWithParams(t.(interface{ Elem() types.Type }).Elem(), pp.params))
+			result[df.index] = fmt.Sprintf("%s$Types.CreateArray(%s)", pre, m.JSCreateWithParams(t.(interface{ Elem() types.Type }).Elem(), params))
 
 		case *types.Map:
-			result[pp.index] = fmt.Sprintf(
-				"%s$Create.Map(%s, %s)",
+			result[df.index] = fmt.Sprintf(
+				"%s$Types.CreateMap(%s, %s)",
 				pre,
-				m.JSCreateWithParams(t.Key(), pp.params),
-				m.JSCreateWithParams(t.Elem(), pp.params),
+				m.JSCreateWithParams(t.Key(), params),
+				m.JSCreateWithParams(t.Elem(), params),
 			)
 
 		case *types.Named:
 			if !collect.IsClass(key) {
-				result[pp.index] = fmt.Sprintf(`
+				result[df.index] = fmt.Sprintf(`
 function $$initCreateType%d(...args) {
     if ($$createType%d === $$initCreateType%d) {
         $$createType%d = %s%s;
     }
     return $$createType%d(...args);
 }`,
-					pp.index,
-					pp.index, pp.index,
-					pp.index, pre, m.JSCreateWithParams(t.Underlying(), pp.params),
-					pp.index,
+					df.index,
+					df.index, df.index,
+					df.index, pre, m.JSCreateWithParams(t.Underlying(), params),
+					df.index,
 				)[1:] // Remove initial newline.
 				break
 			}
@@ -260,57 +258,78 @@ function $$initCreateType%d(...args) {
 					if i > 0 {
 						builder.WriteString(", ")
 					}
-					builder.WriteString(m.JSCreateWithParams(t.TypeArgs().At(i), pp.params))
+					builder.WriteString(m.JSCreateWithParams(t.TypeArgs().At(i), params))
 				}
 				builder.WriteString(")")
 			}
 
-			result[pp.index] = builder.String()
+			result[df.index] = builder.String()
 
 		case *types.Pointer:
-			result[pp.index] = fmt.Sprintf("%s$Create.Nullable(%s)", pre, m.JSCreateWithParams(t.Elem(), pp.params))
+			result[df.index] = fmt.Sprintf("%s$Types.CreateNullable(%s)", pre, m.JSCreateWithParams(t.Elem(), params))
 
 		case *types.Struct:
 			info := m.collector.Struct(t)
 			info.Collect()
 
+			type ungarbleEntry struct{ from, to string }
+			ungarbleMap := make([]ungarbleEntry, 0, len(info.Fields))
+
 			var builder strings.Builder
 			builder.WriteString(pre)
-			builder.WriteString("$Create.Struct({")
+			builder.WriteString("$Types.CreateStruct({")
 
 			for i, field := range info.Fields {
-				createField := m.JSCreateWithParams(field.Type, pp.params)
+				if field.JSName != field.JsonName {
+					ungarbleMap = append(ungarbleMap, ungarbleEntry{field.JsonName, field.JSName})
+				}
+
+				createField := m.JSCreateWithParams(field.Type, params)
 
 				if i > 0 {
 					builder.WriteRune(',')
 				}
 				builder.WriteString("\n    \"")
 				template.JSEscape(&builder, []byte(field.JSName))
-				builder.WriteString("\": { f: \"")
-				template.JSEscape(&builder, []byte(field.JsonName))
-				builder.WriteString("\", c: ")
+				builder.WriteString("\": ")
 				builder.WriteString(createField)
-				builder.WriteString(" }")
 			}
 
 			if len(info.Fields) > 0 {
 				builder.WriteRune('\n')
 			}
-			builder.WriteString("})")
+			builder.WriteRune('}')
 
-			result[pp.index] = builder.String()
+			if len(ungarbleMap) > 0 {
+				builder.WriteString(", {")
+
+				for i, entry := range ungarbleMap {
+					if i > 0 {
+						builder.WriteRune(',')
+					}
+					builder.WriteString("\n    \"")
+					template.JSEscape(&builder, []byte(entry.from))
+					builder.WriteString("\": \"")
+					template.JSEscape(&builder, []byte(entry.to))
+					builder.WriteRune('"')
+				}
+
+				builder.WriteString("\n}")
+			}
+
+			builder.WriteRune(')')
+
+			result[df.index] = builder.String()
 
 		default:
-			result[pp.index] = pre + "$Create.Any"
+			result[df.index] = pre + "$Types.CreateAny"
 		}
 	})
 
-	return result
-}
-
-type postponed struct {
-	index  int
-	params string
+	// Cleanup result slice.
+	return slices.DeleteFunc(result, func(s string) bool {
+		return s == ""
+	})
 }
 
 // hasTypeParams returns true if the given type depends upon type parameters.

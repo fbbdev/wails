@@ -19,12 +19,12 @@ import * as Application from "./application";
 import * as Browser from "./browser";
 import * as Call from "./calls";
 import * as Clipboard from "./clipboard";
-import * as Create from "./create";
 import * as Dialogs from "./dialogs";
 import * as Events from "./events";
 import * as Flags from "./flags";
 import * as Screens from "./screens";
 import * as System from "./system";
+import * as Types from "./types";
 import Window from "./window";
 import * as WML from "./wml";
 
@@ -33,12 +33,12 @@ export {
     Browser,
     Call,
     Clipboard,
-    Create,
     Dialogs,
     Events,
     Flags,
     Screens,
     System,
+    Types,
     Window,
     WML
 };

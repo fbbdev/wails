@@ -21,7 +21,7 @@
  * @module
  */
 {{end}}
-import {Call as $Call, Create as $Create} from "{{js $runtime}}";
+import {Call as $Call, Types as $Types} from "{{js $runtime}}";
 {{range $imports.External}}
 import * as {{jsimport .}} from "{{js .RelPath}}/{{js $models}}";
 {{- end}}{{if $imports.External}}
@@ -69,9 +69,28 @@ import * as $internal from "./{{js $internal}}";
     let $resultPromise = /** @type {any} */($Call.ByName("{{js .FQN}}"
     {{- else}}
     let $resultPromise = /** @type {any} */($Call.ByID({{.ID}}
-    {{- end}}{{range $i, $param := .Params}}, {{jsparam $i .}}{{end}}));
-    {{- if or $useInterfaces (not .Results) ($module.SkipCreate .Results)}}
+    {{- end}}{{range $i, $param := .Params}}, {{$garble := ($module.JSGarble .Type)}}
+        {{- if ne $garble "$Types.GarbleAny"}}{{$garble}}({{end}}
+        {{- jsparam $i .}}
+        {{- if ne $garble "$Types.GarbleAny"}}){{end}}
+    {{- end}}));
+    {{- if or (not .Results) (and $useInterfaces ($module.SkipUngarble .Results)) (and (not $useInterfaces) ($module.SkipCreate .Results))}}
     return $resultPromise;
+    {{- else if $useInterfaces}}
+    let $ungarblePromise = /** @type {any} */($resultPromise.then(($result) => {
+    {{- if eq 1 (len .Results)}}
+        return {{$module.JSUngarble (index .Results 0)}}($result);
+    {{- else}}
+        {{- range $i, $type := .Results}}
+        {{- $ungarble := ($module.JSUngarble $type)}}
+        {{- if ne $ungarble "$Types.UngarbleAny"}}
+        $result[{{$i}}] = {{$ungarble}}($result[{{$i}}]);
+        {{- end}}{{end}}
+        return $result;
+    {{- end}}
+    }));
+    $ungarblePromise.cancel = $resultPromise.cancel.bind($resultPromise);
+    return $ungarblePromise;
     {{- else}}
     let $typingPromise = /** @type {any} */($resultPromise.then(($result) => {
     {{- if eq 1 (len .Results)}}
@@ -79,7 +98,7 @@ import * as $internal from "./{{js $internal}}";
     {{- else}}
         {{- range $i, $type := .Results}}
         {{- $create := ($module.JSCreate $type)}}
-        {{- if ne $create "$Create.Any"}}
+        {{- if ne $create "$Types.CreateAny"}}
         $result[{{$i}}] = {{$create}}($result[{{$i}}]);
         {{- end}}{{end}}
         return $result;
@@ -90,11 +109,25 @@ import * as $internal from "./{{js $internal}}";
     {{- end}}
 }
 {{end}}
-{{- $postponed := $module.PostponedCreates}}
-{{- if $postponed}}
+{{- $deferred := $module.DeferredCreates}}
+{{- if $deferred}}
 // Private type creation functions
-{{- range $i, $create := $postponed}}
+{{- range $i, $create := $deferred}}
 {{if and (ge (len $create) 15) (eq (slice $create 0 15) "function $$init")}}var {{else}}const {{end -}}
 $$createType{{$i}} = {{$create}};
+{{- end}}
+{{end}}
+{{- $deferred = $module.DeferredGarbles}}
+{{- if $deferred}}
+// Private type garbling functions
+{{- range $i, $garble := $deferred}}
+const $$garbleType{{$i}} = {{$garble}};
+{{- end}}
+{{end}}
+{{- $deferred = $module.DeferredUngarbles}}
+{{- if $deferred}}
+// Private type ungarbling functions
+{{- range $i, $ungarble := $deferred}}
+const $$ungarbleType{{$i}} = {{$ungarble}};
 {{- end}}
 {{end}}{{end -}}
