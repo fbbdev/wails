@@ -169,9 +169,9 @@ func (m *module) DeferredUngarbles() []string {
 					builder.WriteRune(',')
 				}
 				builder.WriteString("\n    \"")
-				template.JSEscape(&builder, []byte(field.JSName))
-				builder.WriteString("\": { to: \"")
 				template.JSEscape(&builder, []byte(field.JsonName))
+				builder.WriteString("\": { from: \"")
+				template.JSEscape(&builder, []byte(field.JSName))
 				builder.WriteString("\", ungarble: ")
 				builder.WriteString(ungarbleField)
 				builder.WriteString(" }")
