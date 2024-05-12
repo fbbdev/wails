@@ -108,12 +108,6 @@ func (generator *Generator) Generate(patterns ...string) (stats *collect.Stats, 
 		return
 	}
 
-	// Check for invalid configuration.
-	if garbleMap != nil && generator.options.UseInterfaces {
-		err = fmt.Errorf("garble remapping is not available in interface mode")
-		return
-	}
-
 	// Start package loading feedback.
 	var lpkgMutex sync.Mutex
 	generator.logger.Statusf("Loading packages...")
