@@ -264,19 +264,16 @@ function $$initGarbleType%d(...args) {
 			builder.WriteString(pre)
 			builder.WriteString("$Types.GarbleStruct({")
 
-			for i, field := range info.Fields {
+			for _, field := range info.Fields {
 				garbleField := m.JSGarbleWithParams(field.Type, params)
 
-				if i > 0 {
-					builder.WriteRune(',')
-				}
 				builder.WriteString("\n    \"")
 				template.JSEscape(&builder, []byte(field.JSName))
 				builder.WriteString("\": { to: \"")
 				template.JSEscape(&builder, []byte(field.JsonName))
 				builder.WriteString("\", garble: ")
 				builder.WriteString(garbleField)
-				builder.WriteString(" }")
+				builder.WriteString(" },")
 			}
 
 			if len(info.Fields) > 0 {
