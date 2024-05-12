@@ -12,17 +12,29 @@ import (
 // tmplFunctions holds a map of utility functions
 // that should be available in every template.
 var tmplFunctions = template.FuncMap{
-	"hasdoc":     hasdoc,
-	"isclass":    collect.IsClass,
-	"isjsdocid":  isjsdocid,
-	"isjsdocobj": isjsdocobj,
-	"jsdoc":      jsdoc,
-	"jsdocline":  jsdocline,
-	"jsid":       jsid,
-	"jsimport":   jsimport,
-	"jsparam":    jsparam,
-	"jsvalue":    jsvalue,
-	"typeparam":  typeparam,
+	"hasdoc":      hasdoc,
+	"hasnonempty": hasnonempty,
+	"isclass":     collect.IsClass,
+	"isjsdocid":   isjsdocid,
+	"isjsdocobj":  isjsdocobj,
+	"jsdoc":       jsdoc,
+	"jsdocline":   jsdocline,
+	"jsid":        jsid,
+	"jsimport":    jsimport,
+	"jsparam":     jsparam,
+	"jsvalue":     jsvalue,
+	"typeparam":   typeparam,
+}
+
+// hasnonempty returns true if the given string slice
+// contains at least one non-empty string.
+func hasnonempty(strings []string) bool {
+	for _, str := range strings {
+		if str != "" {
+			return true
+		}
+	}
+	return false
 }
 
 // jsimport formats an external import name

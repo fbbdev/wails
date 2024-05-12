@@ -3,7 +3,6 @@ package render
 import (
 	"fmt"
 	"go/types"
-	"slices"
 	"strings"
 	"text/template"
 
@@ -113,13 +112,15 @@ func (m *module) JSGarbleWithParams(typ types.Type, params string) string {
 
 	case *types.Map:
 		df := m.deferred(garble, typ)
-		if df == "" {
-			m.JSGarbleWithParams(t.Key(), params)
-			m.JSGarbleWithParams(t.Elem(), params)
-			df = m.defer_(garble, typ, params)
+		if df != "" {
+			return df
 		}
 
-		return df
+		garbleKey := m.JSGarbleWithParams(t.Key(), params)
+		garbleValue := m.JSGarbleWithParams(t.Elem(), params)
+		if garbleKey != "$Types.GarbleAny" || garbleValue != "$Types.GarbleAny" {
+			return m.defer_(garble, typ, params)
+		}
 
 	case *types.Named:
 		if t.Obj().Pkg() == nil {
@@ -288,8 +289,5 @@ function $$initGarbleType%d(...args) {
 		}
 	})
 
-	// Cleanup result slice.
-	return slices.DeleteFunc(result, func(s string) bool {
-		return s == ""
-	})
+	return result
 }

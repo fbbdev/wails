@@ -3,7 +3,6 @@ package render
 import (
 	"fmt"
 	"go/types"
-	"slices"
 	"strings"
 	"text/template"
 
@@ -56,14 +55,16 @@ func (m *module) JSUngarbleWithParams(typ types.Type, params string) string {
 		}
 
 	case *types.Map:
-		df := m.deferred(ungarble, typ)
-		if df == "" {
-			m.JSUngarbleWithParams(t.Key(), params)
-			m.JSUngarbleWithParams(t.Elem(), params)
-			df = m.defer_(ungarble, typ, params)
+		df := m.deferred(garble, typ)
+		if df != "" {
+			return df
 		}
 
-		return df
+		ungarbleKey := m.JSUngarbleWithParams(t.Key(), params)
+		ungarbleValue := m.JSUngarbleWithParams(t.Elem(), params)
+		if ungarbleKey != "$Types.UngarbleAny" || ungarbleValue != "$Types.UngarbleAny" {
+			return m.defer_(garble, typ, params)
+		}
 
 	case *types.Named:
 		if t.Obj().Pkg() == nil {
@@ -197,8 +198,5 @@ function $$initUngarbleType%d(...args) {
 		}
 	})
 
-	// Cleanup result slice.
-	return slices.DeleteFunc(result, func(s string) bool {
-		return s == ""
-	})
+	return result
 }

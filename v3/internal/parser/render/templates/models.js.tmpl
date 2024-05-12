@@ -268,18 +268,18 @@ export class {{jsid $model.Name}} {
 {{end}}
 {{- end}}
 {{- $deferred := $module.DeferredCreates}}
-{{- if $deferred}}
+{{- if hasnonempty $deferred}}
 // Private type creation functions
-{{- range $i, $create := $deferred}}
+{{- range $i, $create := $deferred}}{{if $create}}
 {{if and (ge (len $create) 15) (eq (slice $create 0 15) "function $$init")}}var {{else}}const {{end -}}
 $$createType{{$i}} = {{$create}};
-{{- end}}
+{{- end}}{{end}}
 {{end}}
 {{- $deferred = $module.DeferredGarbles}}
-{{- if $deferred}}
+{{- if hasnonempty $deferred}}
 // Private type garbling functions
-{{- range $i, $garble := $deferred}}
+{{- range $i, $garble := $deferred}}{{if $garble}}
 {{if and (ge (len $garble) 15) (eq (slice $garble 0 15) "function $$init")}}var {{else}}const {{end -}}
 $$garbleType{{$i}} = {{$garble}};
-{{- end}}
+{{- end}}{{end}}
 {{end -}}

@@ -3,7 +3,6 @@ package render
 import (
 	"fmt"
 	"go/types"
-	"slices"
 	"strings"
 	"text/template"
 
@@ -327,10 +326,7 @@ function $$initCreateType%d(...args) {
 		}
 	})
 
-	// Cleanup result slice.
-	return slices.DeleteFunc(result, func(s string) bool {
-		return s == ""
-	})
+	return result
 }
 
 // hasTypeParams returns true if the given type depends upon type parameters.
