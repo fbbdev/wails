@@ -187,7 +187,12 @@ func (imports *ImportMap) addTypeImpl(typ types.Type, visited map[*types.TypeNam
 				break
 			}
 
-			if IsClass(typ) || IsString(typ) || IsAny(typ) {
+			if collector.options.UseInterfaces && collector.options.GarbleMapFile == "" {
+				// No translation code needed.
+				return
+			}
+
+			if (!collector.options.UseInterfaces && IsClass(typ)) || IsString(typ) || IsAny(typ) {
 				return
 			}
 
