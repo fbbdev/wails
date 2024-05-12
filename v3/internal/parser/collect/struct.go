@@ -196,8 +196,8 @@ func (info *StructInfo) Collect() *StructInfo {
 
 						finfo := fieldData{
 							StructField: &StructField{
-								JsonName: name,
 								JSName:   name,
+								JsonName: name,
 								Type:     field.Type(),
 								Optional: optional,
 								Quoted:   quoted,
@@ -250,8 +250,8 @@ func (info *StructInfo) Collect() *StructInfo {
 
 		// Prepare for field selection phase.
 		slices.SortFunc(fields, func(f1 fieldData, f2 fieldData) int {
-			// Sort by name first.
-			if diff := strings.Compare(f1.JsonName, f2.JsonName); diff != 0 {
+			// Sort by name first. Use original, non-garbled names.
+			if diff := strings.Compare(f1.JSName, f2.JSName); diff != 0 {
 				return diff
 			}
 
@@ -278,7 +278,7 @@ func (info *StructInfo) Collect() *StructInfo {
 		// Keep for each name the dominant field, drop those for which ties
 		// still exist (ignoring order of occurrence).
 		for i, j := 0, 1; j <= len(fields); j++ {
-			if j < len(fields) && fields[i].JsonName == fields[j].JsonName {
+			if j < len(fields) && fields[i].JSName == fields[j].JSName {
 				continue
 			}
 
