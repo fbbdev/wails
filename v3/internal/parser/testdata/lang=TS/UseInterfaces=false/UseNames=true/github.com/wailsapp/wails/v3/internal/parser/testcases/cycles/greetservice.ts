@@ -44,7 +44,7 @@ const $$createType5 = $Types.CreateNullable($$createType4);
 const $$createType6 = $Types.CreateArray($Types.CreateAny);
 const $$createType7 = $Types.CreateStruct({
     "X": $$createType5,
-    "Y": $$createType6
+    "Y": $$createType6,
 });
 const $$createType8 = $Types.CreateArray($$createType7);
 var $$createType9 = function $$initCreateType9(...args) {
@@ -57,6 +57,6 @@ const $$createType10 = $Types.CreateNullable($$createType9);
 const $$createType11 = $Types.CreateArray($$createType4);
 const $$createType12 = $Types.CreateStruct({
     "X": $$createType10,
-    "Y": $$createType11
+    "Y": $$createType11,
 });
 const $$createType13 = $Types.CreateArray($$createType12);

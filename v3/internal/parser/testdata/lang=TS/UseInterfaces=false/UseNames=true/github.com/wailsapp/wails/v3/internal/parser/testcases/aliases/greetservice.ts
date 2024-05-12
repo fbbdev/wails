@@ -52,9 +52,9 @@ const $$createType1 = $models.GenericPerson.createFrom($Types.CreateAny);
 const $$createType2 = $Types.CreateArray($Types.CreateAny);
 const $$createType3 = $Types.CreateArray($Types.CreateAny);
 const $$createType4 = $Types.CreateStruct({
-    "NoMoreIdeas": $$createType3
+    "NoMoreIdeas": $$createType3,
 });
 const $$createType5 = $Types.CreateStruct({
     "Foo": $$createType2,
-    "Other": $$createType4
+    "Other": $$createType4,
 });
