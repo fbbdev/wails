@@ -175,7 +175,7 @@ func (imports *ImportMap) addTypeImpl(typ types.Type, visited map[*types.TypeNam
 				}
 			}
 
-			if collector.options.UseInterfaces {
+			if collector.options.UseInterfaces && collector.options.GarbleMapFile == "" {
 				// No creation/initialisation code required.
 				return
 			}
@@ -185,11 +185,6 @@ func (imports *ImportMap) addTypeImpl(typ types.Type, visited map[*types.TypeNam
 				// JS value creation and initialisation.
 				typ = types.Unalias(typ)
 				break
-			}
-
-			if collector.options.UseInterfaces && collector.options.GarbleMapFile == "" {
-				// No translation code needed.
-				return
 			}
 
 			if (!collector.options.UseInterfaces && IsClass(typ)) || IsString(typ) || IsAny(typ) {
