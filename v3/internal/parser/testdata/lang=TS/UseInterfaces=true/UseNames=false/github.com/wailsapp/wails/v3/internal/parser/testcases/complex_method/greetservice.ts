@@ -16,9 +16,6 @@ import * as $models from "./models.ts";
  * The comment has even some * / traps!!
  */
 export function Greet(str: string, people: $models.Person[] | null, $2: {"AnotherCount": number, "AnotherOne": $models.Person | null}, assoc: { [_: `${number}`]: boolean | null } | null, $4: (number | null)[] | null, ...other: string[]): Promise<[$models.Person, any, number[] | null]> & { cancel(): void } {
-    let $resultPromise = $Call.ByID(1411160069, str, people, $2, $$garbleType0(assoc), $4, other) as any;
+    let $resultPromise = $Call.ByID(1411160069, str, people, $2, assoc, $4, other) as any;
     return $resultPromise;
 }
-
-// Private type garbling functions
-const $$garbleType0 = $Types.GarbleMap($Types.GarbleAny, $Types.GarbleAny);

@@ -24,10 +24,10 @@ import * as $models from "./models.js";
  * @returns {Promise<[$models.Person, any, number[]]> & { cancel(): void }}
  */
 export function Greet(str, people, $2, assoc, $4, ...other) {
-    let $resultPromise = /** @type {any} */($Call.ByID(1411160069, str, people, $2, $$garbleType0(assoc), $4, other));
+    let $resultPromise = /** @type {any} */($Call.ByID(1411160069, str, people, $2, assoc, $4, other));
     let $typingPromise = /** @type {any} */($resultPromise.then(($result) => {
-        $result[0] = $$createType1($result[0]);
-        $result[2] = $$createType2($result[2]);
+        $result[0] = $$createType0($result[0]);
+        $result[2] = $$createType1($result[2]);
         return $result;
     }));
     $typingPromise.cancel = $resultPromise.cancel.bind($resultPromise);
@@ -37,6 +37,3 @@ export function Greet(str, people, $2, assoc, $4, ...other) {
 // Private type creation functions
 const $$createType0 = $models.Person.createFrom;
 const $$createType1 = $Types.CreateArray($Types.CreateAny);
-
-// Private type garbling functions
-const $$garbleType0 = $Types.GarbleMap($Types.GarbleAny, $Types.GarbleAny);

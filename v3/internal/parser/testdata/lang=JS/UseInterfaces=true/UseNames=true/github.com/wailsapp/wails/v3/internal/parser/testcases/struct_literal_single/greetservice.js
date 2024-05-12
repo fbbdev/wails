@@ -161,7 +161,7 @@ export function IntPointerInputNamedOutputs($in) {
  * @returns {Promise<void> & { cancel(): void }}
  */
 export function MapIntInt($in) {
-    let $resultPromise = /** @type {any} */($Call.ByName("main.GreetService.MapIntInt", $$garbleType0($in)));
+    let $resultPromise = /** @type {any} */($Call.ByName("main.GreetService.MapIntInt", $in));
     return $resultPromise;
 }
 
@@ -170,7 +170,7 @@ export function MapIntInt($in) {
  * @returns {Promise<void> & { cancel(): void }}
  */
 export function MapIntPointerInt($in) {
-    let $resultPromise = /** @type {any} */($Call.ByName("main.GreetService.MapIntPointerInt", $$garbleType1($in)));
+    let $resultPromise = /** @type {any} */($Call.ByName("main.GreetService.MapIntPointerInt", $in));
     return $resultPromise;
 }
 
@@ -179,7 +179,7 @@ export function MapIntPointerInt($in) {
  * @returns {Promise<void> & { cancel(): void }}
  */
 export function MapIntSliceInt($in) {
-    let $resultPromise = /** @type {any} */($Call.ByName("main.GreetService.MapIntSliceInt", $$garbleType2($in)));
+    let $resultPromise = /** @type {any} */($Call.ByName("main.GreetService.MapIntSliceInt", $in));
     return $resultPromise;
 }
 
@@ -188,7 +188,7 @@ export function MapIntSliceInt($in) {
  * @returns {Promise<{ [_: `${number}`]: number[] | null } | null> & { cancel(): void }}
  */
 export function MapIntSliceIntInMapIntSliceIntOut($in) {
-    let $resultPromise = /** @type {any} */($Call.ByName("main.GreetService.MapIntSliceIntInMapIntSliceIntOut", $$garbleType2($in)));
+    let $resultPromise = /** @type {any} */($Call.ByName("main.GreetService.MapIntSliceIntInMapIntSliceIntOut", $in));
     return $resultPromise;
 }
 
@@ -232,7 +232,7 @@ export function PointerFloat64InFloat64Out($in) {
  * @returns {Promise<void> & { cancel(): void }}
  */
 export function PointerMapIntInt($in) {
-    let $resultPromise = /** @type {any} */($Call.ByName("main.GreetService.PointerMapIntInt", $$garbleType3($in)));
+    let $resultPromise = /** @type {any} */($Call.ByName("main.GreetService.PointerMapIntInt", $in));
     return $resultPromise;
 }
 
@@ -397,9 +397,3 @@ export function UIntPointerInAndOutput($in) {
     let $resultPromise = /** @type {any} */($Call.ByName("main.GreetService.UIntPointerInAndOutput", $in));
     return $resultPromise;
 }
-
-// Private type garbling functions
-const $$garbleType0 = $Types.GarbleMap($Types.GarbleAny, $Types.GarbleAny);
-const $$garbleType1 = $Types.GarbleMap($Types.GarbleAny, $Types.GarbleAny);
-const $$garbleType2 = $Types.GarbleMap($Types.GarbleAny, $Types.GarbleAny);
-const $$garbleType3 = $Types.GarbleNullable($$garbleType0);

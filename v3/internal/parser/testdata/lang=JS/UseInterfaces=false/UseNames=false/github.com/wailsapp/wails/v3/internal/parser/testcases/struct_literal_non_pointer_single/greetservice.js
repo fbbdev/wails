@@ -161,7 +161,7 @@ export function IntPointerInputNamedOutputs($in) {
  * @returns {Promise<void> & { cancel(): void }}
  */
 export function MapIntInt($in) {
-    let $resultPromise = /** @type {any} */($Call.ByID(2386486356, $$garbleType0($in)));
+    let $resultPromise = /** @type {any} */($Call.ByID(2386486356, $in));
     return $resultPromise;
 }
 
@@ -170,7 +170,7 @@ export function MapIntInt($in) {
  * @returns {Promise<void> & { cancel(): void }}
  */
 export function MapIntPointerInt($in) {
-    let $resultPromise = /** @type {any} */($Call.ByID(550413585, $$garbleType1($in)));
+    let $resultPromise = /** @type {any} */($Call.ByID(550413585, $in));
     return $resultPromise;
 }
 
@@ -179,7 +179,7 @@ export function MapIntPointerInt($in) {
  * @returns {Promise<void> & { cancel(): void }}
  */
 export function MapIntSliceInt($in) {
-    let $resultPromise = /** @type {any} */($Call.ByID(2900172572, $$garbleType2($in)));
+    let $resultPromise = /** @type {any} */($Call.ByID(2900172572, $in));
     return $resultPromise;
 }
 
@@ -188,9 +188,9 @@ export function MapIntSliceInt($in) {
  * @returns {Promise<{ [_: `${number}`]: number[] }> & { cancel(): void }}
  */
 export function MapIntSliceIntInMapIntSliceIntOut($in) {
-    let $resultPromise = /** @type {any} */($Call.ByID(881980169, $$garbleType2($in)));
+    let $resultPromise = /** @type {any} */($Call.ByID(881980169, $in));
     let $typingPromise = /** @type {any} */($resultPromise.then(($result) => {
-        return $$createType2($result);
+        return $$createType1($result);
     }));
     $typingPromise.cancel = $resultPromise.cancel.bind($resultPromise);
     return $typingPromise;
@@ -236,7 +236,7 @@ export function PointerFloat64InFloat64Out($in) {
  * @returns {Promise<void> & { cancel(): void }}
  */
 export function PointerMapIntInt($in) {
-    let $resultPromise = /** @type {any} */($Call.ByID(3516977899, $$garbleType4($in)));
+    let $resultPromise = /** @type {any} */($Call.ByID(3516977899, $in));
     return $resultPromise;
 }
 
@@ -256,7 +256,7 @@ export function PointerStringInStringOut($in) {
 export function StringArrayInputNamedOutput($in) {
     let $resultPromise = /** @type {any} */($Call.ByID(3678582682, $in));
     let $typingPromise = /** @type {any} */($resultPromise.then(($result) => {
-        return $$createType5($result);
+        return $$createType2($result);
     }));
     $typingPromise.cancel = $resultPromise.cancel.bind($resultPromise);
     return $typingPromise;
@@ -269,7 +269,7 @@ export function StringArrayInputNamedOutput($in) {
 export function StringArrayInputNamedOutputs($in) {
     let $resultPromise = /** @type {any} */($Call.ByID(319259595, $in));
     let $typingPromise = /** @type {any} */($resultPromise.then(($result) => {
-        return $$createType5($result);
+        return $$createType2($result);
     }));
     $typingPromise.cancel = $resultPromise.cancel.bind($resultPromise);
     return $typingPromise;
@@ -282,7 +282,7 @@ export function StringArrayInputNamedOutputs($in) {
 export function StringArrayInputStringArrayOut($in) {
     let $resultPromise = /** @type {any} */($Call.ByID(383995060, $in));
     let $typingPromise = /** @type {any} */($resultPromise.then(($result) => {
-        return $$createType5($result);
+        return $$createType2($result);
     }));
     $typingPromise.cancel = $resultPromise.cancel.bind($resultPromise);
     return $typingPromise;
@@ -304,7 +304,7 @@ export function StringArrayInputStringOut($in) {
 export function StructInputStructOutput($in) {
     let $resultPromise = /** @type {any} */($Call.ByID(3835643147, $in));
     let $typingPromise = /** @type {any} */($resultPromise.then(($result) => {
-        return $$createType6($result);
+        return $$createType3($result);
     }));
     $typingPromise.cancel = $resultPromise.cancel.bind($resultPromise);
     return $typingPromise;
@@ -326,7 +326,7 @@ export function StructPointerInputErrorOutput($in) {
 export function StructPointerInputStructPointerOutput($in) {
     let $resultPromise = /** @type {any} */($Call.ByID(2943477349, $in));
     let $typingPromise = /** @type {any} */($resultPromise.then(($result) => {
-        return $$createType7($result);
+        return $$createType4($result);
     }));
     $typingPromise.cancel = $resultPromise.cancel.bind($resultPromise);
     return $typingPromise;
@@ -423,14 +423,8 @@ export function UIntPointerInAndOutput($in) {
 }
 
 // Private type creation functions
-const $$createType0 = $Types.CreateMap($Types.CreateAny, $$createType3);
-const $$createType1 = $Types.CreateArray($Types.CreateAny);
+const $$createType0 = $Types.CreateArray($Types.CreateAny);
+const $$createType1 = $Types.CreateMap($Types.CreateAny, $$createType0);
 const $$createType2 = $Types.CreateArray($Types.CreateAny);
 const $$createType3 = $models.Person.createFrom;
-const $$createType4 = $Types.CreateNullable($$createType6);
-
-// Private type garbling functions
-const $$garbleType0 = $Types.GarbleMap($Types.GarbleAny, $Types.GarbleAny);
-const $$garbleType1 = $Types.GarbleMap($Types.GarbleAny, $Types.GarbleAny);
-const $$garbleType2 = $Types.GarbleMap($Types.GarbleAny, $Types.GarbleAny);
-const $$garbleType3 = $Types.GarbleNullable($$garbleType0);
+const $$createType4 = $Types.CreateNullable($$createType3);

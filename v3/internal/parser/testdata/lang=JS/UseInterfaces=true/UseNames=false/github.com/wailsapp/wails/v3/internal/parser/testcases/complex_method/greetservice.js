@@ -24,9 +24,6 @@ import * as $models from "./models.js";
  * @returns {Promise<[$models.Person, any, number[] | null]> & { cancel(): void }}
  */
 export function Greet(str, people, $2, assoc, $4, ...other) {
-    let $resultPromise = /** @type {any} */($Call.ByID(1411160069, str, people, $2, $$garbleType0(assoc), $4, other));
+    let $resultPromise = /** @type {any} */($Call.ByID(1411160069, str, people, $2, assoc, $4, other));
     return $resultPromise;
 }
-
-// Private type garbling functions
-const $$garbleType0 = $Types.GarbleMap($Types.GarbleAny, $Types.GarbleAny);

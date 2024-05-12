@@ -161,7 +161,7 @@ export function IntPointerInputNamedOutputs($in) {
  * @returns {Promise<void> & { cancel(): void }}
  */
 export function MapIntInt($in) {
-    let $resultPromise = /** @type {any} */($Call.ByID(2386486356, $$garbleType0($in)));
+    let $resultPromise = /** @type {any} */($Call.ByID(2386486356, $in));
     return $resultPromise;
 }
 
@@ -170,7 +170,7 @@ export function MapIntInt($in) {
  * @returns {Promise<void> & { cancel(): void }}
  */
 export function MapIntPointerInt($in) {
-    let $resultPromise = /** @type {any} */($Call.ByID(550413585, $$garbleType1($in)));
+    let $resultPromise = /** @type {any} */($Call.ByID(550413585, $in));
     return $resultPromise;
 }
 
@@ -179,7 +179,7 @@ export function MapIntPointerInt($in) {
  * @returns {Promise<void> & { cancel(): void }}
  */
 export function MapIntSliceInt($in) {
-    let $resultPromise = /** @type {any} */($Call.ByID(2900172572, $$garbleType2($in)));
+    let $resultPromise = /** @type {any} */($Call.ByID(2900172572, $in));
     return $resultPromise;
 }
 
@@ -188,7 +188,7 @@ export function MapIntSliceInt($in) {
  * @returns {Promise<{ [_: `${number}`]: number[] | null } | null> & { cancel(): void }}
  */
 export function MapIntSliceIntInMapIntSliceIntOut($in) {
-    let $resultPromise = /** @type {any} */($Call.ByID(881980169, $$garbleType2($in)));
+    let $resultPromise = /** @type {any} */($Call.ByID(881980169, $in));
     return $resultPromise;
 }
 
@@ -232,7 +232,7 @@ export function PointerFloat64InFloat64Out($in) {
  * @returns {Promise<void> & { cancel(): void }}
  */
 export function PointerMapIntInt($in) {
-    let $resultPromise = /** @type {any} */($Call.ByID(3516977899, $$garbleType3($in)));
+    let $resultPromise = /** @type {any} */($Call.ByID(3516977899, $in));
     return $resultPromise;
 }
 
@@ -397,9 +397,3 @@ export function UIntPointerInAndOutput($in) {
     let $resultPromise = /** @type {any} */($Call.ByID(1367187362, $in));
     return $resultPromise;
 }
-
-// Private type garbling functions
-const $$garbleType0 = $Types.GarbleMap($Types.GarbleAny, $Types.GarbleAny);
-const $$garbleType1 = $Types.GarbleMap($Types.GarbleAny, $Types.GarbleAny);
-const $$garbleType2 = $Types.GarbleMap($Types.GarbleAny, $Types.GarbleAny);
-const $$garbleType3 = $Types.GarbleNullable($$garbleType0);

@@ -16,10 +16,10 @@ import * as $models from "./models.ts";
  * The comment has even some * / traps!!
  */
 export function Greet(str: string, people: $models.Person[], $2: {"AnotherCount": number, "AnotherOne": $models.Person | null}, assoc: { [_: `${number}`]: boolean | null }, $4: (number | null)[], ...other: string[]): Promise<[$models.Person, any, number[]]> & { cancel(): void } {
-    let $resultPromise = $Call.ByID(1411160069, str, people, $2, $$garbleType0(assoc), $4, other) as any;
+    let $resultPromise = $Call.ByID(1411160069, str, people, $2, assoc, $4, other) as any;
     let $typingPromise = $resultPromise.then(($result) => {
-        $result[0] = $$createType1($result[0]);
-        $result[2] = $$createType2($result[2]);
+        $result[0] = $$createType0($result[0]);
+        $result[2] = $$createType1($result[2]);
         return $result;
     }) as any;
     $typingPromise.cancel = $resultPromise.cancel.bind($resultPromise);
@@ -29,6 +29,3 @@ export function Greet(str: string, people: $models.Person[], $2: {"AnotherCount"
 // Private type creation functions
 const $$createType0 = $models.Person.createFrom;
 const $$createType1 = $Types.CreateArray($Types.CreateAny);
-
-// Private type garbling functions
-const $$garbleType0 = $Types.GarbleMap($Types.GarbleAny, $Types.GarbleAny);

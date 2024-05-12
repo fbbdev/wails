@@ -94,24 +94,24 @@ export function IntPointerInputNamedOutputs($in: number | null): Promise<number 
 }
 
 export function MapIntInt($in: { [_: `${number}`]: number }): Promise<void> & { cancel(): void } {
-    let $resultPromise = $Call.ByName("main.GreetService.MapIntInt", $$garbleType0($in)) as any;
+    let $resultPromise = $Call.ByName("main.GreetService.MapIntInt", $in) as any;
     return $resultPromise;
 }
 
 export function MapIntPointerInt($in: { [_: string]: number }): Promise<void> & { cancel(): void } {
-    let $resultPromise = $Call.ByName("main.GreetService.MapIntPointerInt", $$garbleType1($in)) as any;
+    let $resultPromise = $Call.ByName("main.GreetService.MapIntPointerInt", $in) as any;
     return $resultPromise;
 }
 
 export function MapIntSliceInt($in: { [_: `${number}`]: number[] }): Promise<void> & { cancel(): void } {
-    let $resultPromise = $Call.ByName("main.GreetService.MapIntSliceInt", $$garbleType2($in)) as any;
+    let $resultPromise = $Call.ByName("main.GreetService.MapIntSliceInt", $in) as any;
     return $resultPromise;
 }
 
 export function MapIntSliceIntInMapIntSliceIntOut($in: { [_: `${number}`]: number[] }): Promise<{ [_: `${number}`]: number[] }> & { cancel(): void } {
-    let $resultPromise = $Call.ByName("main.GreetService.MapIntSliceIntInMapIntSliceIntOut", $$garbleType2($in)) as any;
+    let $resultPromise = $Call.ByName("main.GreetService.MapIntSliceIntInMapIntSliceIntOut", $in) as any;
     let $typingPromise = $resultPromise.then(($result) => {
-        return $$createType2($result);
+        return $$createType1($result);
     }) as any;
     $typingPromise.cancel = $resultPromise.cancel.bind($resultPromise);
     return $typingPromise;
@@ -138,7 +138,7 @@ export function PointerFloat64InFloat64Out($in: number | null): Promise<number |
 }
 
 export function PointerMapIntInt($in: { [_: `${number}`]: number } | null): Promise<void> & { cancel(): void } {
-    let $resultPromise = $Call.ByName("main.GreetService.PointerMapIntInt", $$garbleType4($in)) as any;
+    let $resultPromise = $Call.ByName("main.GreetService.PointerMapIntInt", $in) as any;
     return $resultPromise;
 }
 
@@ -150,7 +150,7 @@ export function PointerStringInStringOut($in: string | null): Promise<string | n
 export function StringArrayInputNamedOutput($in: string[]): Promise<string[]> & { cancel(): void } {
     let $resultPromise = $Call.ByName("main.GreetService.StringArrayInputNamedOutput", $in) as any;
     let $typingPromise = $resultPromise.then(($result) => {
-        return $$createType5($result);
+        return $$createType2($result);
     }) as any;
     $typingPromise.cancel = $resultPromise.cancel.bind($resultPromise);
     return $typingPromise;
@@ -159,7 +159,7 @@ export function StringArrayInputNamedOutput($in: string[]): Promise<string[]> & 
 export function StringArrayInputNamedOutputs($in: string[]): Promise<string[]> & { cancel(): void } {
     let $resultPromise = $Call.ByName("main.GreetService.StringArrayInputNamedOutputs", $in) as any;
     let $typingPromise = $resultPromise.then(($result) => {
-        return $$createType5($result);
+        return $$createType2($result);
     }) as any;
     $typingPromise.cancel = $resultPromise.cancel.bind($resultPromise);
     return $typingPromise;
@@ -168,7 +168,7 @@ export function StringArrayInputNamedOutputs($in: string[]): Promise<string[]> &
 export function StringArrayInputStringArrayOut($in: string[]): Promise<string[]> & { cancel(): void } {
     let $resultPromise = $Call.ByName("main.GreetService.StringArrayInputStringArrayOut", $in) as any;
     let $typingPromise = $resultPromise.then(($result) => {
-        return $$createType5($result);
+        return $$createType2($result);
     }) as any;
     $typingPromise.cancel = $resultPromise.cancel.bind($resultPromise);
     return $typingPromise;
@@ -182,7 +182,7 @@ export function StringArrayInputStringOut($in: string[]): Promise<string> & { ca
 export function StructInputStructOutput($in: $models.Person): Promise<$models.Person> & { cancel(): void } {
     let $resultPromise = $Call.ByName("main.GreetService.StructInputStructOutput", $in) as any;
     let $typingPromise = $resultPromise.then(($result) => {
-        return $$createType6($result);
+        return $$createType3($result);
     }) as any;
     $typingPromise.cancel = $resultPromise.cancel.bind($resultPromise);
     return $typingPromise;
@@ -196,7 +196,7 @@ export function StructPointerInputErrorOutput($in: $models.Person | null): Promi
 export function StructPointerInputStructPointerOutput($in: $models.Person | null): Promise<$models.Person | null> & { cancel(): void } {
     let $resultPromise = $Call.ByName("main.GreetService.StructPointerInputStructPointerOutput", $in) as any;
     let $typingPromise = $resultPromise.then(($result) => {
-        return $$createType7($result);
+        return $$createType4($result);
     }) as any;
     $typingPromise.cancel = $resultPromise.cancel.bind($resultPromise);
     return $typingPromise;
@@ -253,14 +253,8 @@ export function UIntPointerInAndOutput($in: number | null): Promise<number | nul
 }
 
 // Private type creation functions
-const $$createType0 = $Types.CreateMap($Types.CreateAny, $$createType3);
-const $$createType1 = $Types.CreateArray($Types.CreateAny);
+const $$createType0 = $Types.CreateArray($Types.CreateAny);
+const $$createType1 = $Types.CreateMap($Types.CreateAny, $$createType0);
 const $$createType2 = $Types.CreateArray($Types.CreateAny);
 const $$createType3 = $models.Person.createFrom;
-const $$createType4 = $Types.CreateNullable($$createType6);
-
-// Private type garbling functions
-const $$garbleType0 = $Types.GarbleMap($Types.GarbleAny, $Types.GarbleAny);
-const $$garbleType1 = $Types.GarbleMap($Types.GarbleAny, $Types.GarbleAny);
-const $$garbleType2 = $Types.GarbleMap($Types.GarbleAny, $Types.GarbleAny);
-const $$garbleType3 = $Types.GarbleNullable($$garbleType0);
+const $$createType4 = $Types.CreateNullable($$createType3);
