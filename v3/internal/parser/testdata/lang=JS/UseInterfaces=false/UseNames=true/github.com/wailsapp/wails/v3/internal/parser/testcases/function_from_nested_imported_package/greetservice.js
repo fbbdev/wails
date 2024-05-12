@@ -7,7 +7,7 @@
  * @module
  */
 
-import {Call as $Call, Create as $Create} from "/wails/runtime.js";
+import {Call as $Call, Types as $Types} from "/wails/runtime.js";
 
 import * as $models from "./models.js";
 
@@ -37,4 +37,4 @@ export function NewPerson(name) {
 
 // Private type creation functions
 const $$createType0 = $models.Person.createFrom;
-const $$createType1 = $Create.Nullable($$createType0);
+const $$createType1 = $Types.CreateNullable($$createType0);

@@ -6,7 +6,7 @@
  * @module
  */
 
-import {Call as $Call, Create as $Create} from "/wails/runtime.js";
+import {Call as $Call, Types as $Types} from "/wails/runtime.js";
 
 import * as $models from "./models.ts";
 
@@ -31,32 +31,32 @@ var $$createType0 = function $$initCreateType0(...args) {
     }
     return $$createType0(...args);
 };
-const $$createType1 = $Create.Nullable($$createType0);
-const $$createType2 = $Create.Map($Create.Any, $$createType1);
-const $$createType3 = $Create.Array($$createType2);
+const $$createType1 = $Types.CreateNullable($$createType0);
+const $$createType2 = $Types.CreateMap($Types.CreateAny, $$createType1);
+const $$createType3 = $Types.CreateArray($$createType2);
 var $$createType4 = function $$initCreateType4(...args) {
     if ($$createType4 === $$initCreateType4) {
         $$createType4 = $$createType8;
     }
     return $$createType4(...args);
 };
-const $$createType5 = $Create.Nullable($$createType4);
-const $$createType6 = $Create.Array($Create.Any);
-const $$createType7 = $Create.Struct({
+const $$createType5 = $Types.CreateNullable($$createType4);
+const $$createType6 = $Types.CreateArray($Types.CreateAny);
+const $$createType7 = $Types.CreateStruct({
     "X": $$createType5,
-    "Y": $$createType6,
+    "Y": $$createType6
 });
-const $$createType8 = $Create.Array($$createType7);
+const $$createType8 = $Types.CreateArray($$createType7);
 var $$createType9 = function $$initCreateType9(...args) {
     if ($$createType9 === $$initCreateType9) {
         $$createType9 = $$createType13;
     }
     return $$createType9(...args);
 };
-const $$createType10 = $Create.Nullable($$createType9);
-const $$createType11 = $Create.Array($$createType4);
-const $$createType12 = $Create.Struct({
+const $$createType10 = $Types.CreateNullable($$createType9);
+const $$createType11 = $Types.CreateArray($$createType4);
+const $$createType12 = $Types.CreateStruct({
     "X": $$createType10,
-    "Y": $$createType11,
+    "Y": $$createType11
 });
-const $$createType13 = $Create.Array($$createType12);
+const $$createType13 = $Types.CreateArray($$createType12);

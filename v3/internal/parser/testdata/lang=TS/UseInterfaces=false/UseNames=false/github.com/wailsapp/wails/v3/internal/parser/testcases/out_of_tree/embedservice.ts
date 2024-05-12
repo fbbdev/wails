@@ -6,7 +6,7 @@
  * @module
  */
 
-import {Call as $Call, Create as $Create} from "/wails/runtime.js";
+import {Call as $Call, Types as $Types} from "/wails/runtime.js";
 
 import * as nobindingshere$0 from "../no_bindings_here/models.ts";
 
@@ -37,5 +37,5 @@ export function LikeThisOtherOne(): Promise<void> & { cancel(): void } {
 // Private type creation functions
 const $$createType0 = nobindingshere$0.Person.createFrom;
 const $$createType1 = nobindingshere$0.Impersonator.createFrom;
-const $$createType2 = nobindingshere$0.HowDifferent.createFrom($Create.Any);
+const $$createType2 = nobindingshere$0.HowDifferent.createFrom($Types.CreateAny);
 const $$createType3 = nobindingshere$0.PrivatePerson.createFrom;

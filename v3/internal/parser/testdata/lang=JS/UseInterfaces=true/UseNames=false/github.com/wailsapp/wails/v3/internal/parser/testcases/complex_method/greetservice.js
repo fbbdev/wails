@@ -7,7 +7,7 @@
  * @module
  */
 
-import {Call as $Call, Create as $Create} from "/wails/runtime.js";
+import {Call as $Call, Types as $Types} from "/wails/runtime.js";
 
 import * as $models from "./models.js";
 
@@ -24,6 +24,9 @@ import * as $models from "./models.js";
  * @returns {Promise<[$models.Person, any, number[] | null]> & { cancel(): void }}
  */
 export function Greet(str, people, $2, assoc, $4, ...other) {
-    let $resultPromise = /** @type {any} */($Call.ByID(1411160069, str, people, $2, assoc, $4, other));
+    let $resultPromise = /** @type {any} */($Call.ByID(1411160069, str, people, $2, $$garbleType0(assoc), $4, other));
     return $resultPromise;
 }
+
+// Private type garbling functions
+const $$garbleType0 = $Types.GarbleMap($Types.GarbleAny, $Types.GarbleAny);

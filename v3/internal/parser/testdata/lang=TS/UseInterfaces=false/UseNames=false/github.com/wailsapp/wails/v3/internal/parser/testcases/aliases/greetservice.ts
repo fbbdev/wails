@@ -6,7 +6,7 @@
  * @module
  */
 
-import {Call as $Call, Create as $Create} from "/wails/runtime.js";
+import {Call as $Call, Types as $Types} from "/wails/runtime.js";
 
 import * as $models from "./models.ts";
 
@@ -48,13 +48,13 @@ export function Greet($0: $models.EmptyAliasStruct, $1: $models.EmptyStruct): Pr
 
 // Private type creation functions
 const $$createType0 = $models.Person.createFrom;
-const $$createType1 = $models.GenericPerson.createFrom($Create.Any);
-const $$createType2 = $Create.Array($Create.Any);
-const $$createType3 = $Create.Array($Create.Any);
-const $$createType4 = $Create.Struct({
-    "NoMoreIdeas": $$createType3,
+const $$createType1 = $models.GenericPerson.createFrom($Types.CreateAny);
+const $$createType2 = $Types.CreateArray($Types.CreateAny);
+const $$createType3 = $Types.CreateArray($Types.CreateAny);
+const $$createType4 = $Types.CreateStruct({
+    "NoMoreIdeas": $$createType3
 });
-const $$createType5 = $Create.Struct({
+const $$createType5 = $Types.CreateStruct({
     "Foo": $$createType2,
-    "Other": $$createType4,
+    "Other": $$createType4
 });
