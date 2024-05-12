@@ -285,6 +285,9 @@ function $$initCreateType%d(...args) {
 				}
 
 				createField := m.JSCreateWithParams(field.Type, params)
+				if createField == "$Types.CreateAny" {
+					continue
+				}
 
 				if i > 0 {
 					builder.WriteRune(',')
