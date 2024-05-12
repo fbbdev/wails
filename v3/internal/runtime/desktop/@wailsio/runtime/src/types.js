@@ -79,7 +79,7 @@ export function CreateArray(element) {
  * are of that type. The input array is never modified.
  * @template T
  * @param {(T) => any} element
- * @returns {(T[]) => any[]}
+ * @returns {(value: T[]) => any[]}
  */
 export function GarbleArray(element) {
     if (element === GarbleAny) {
@@ -94,7 +94,7 @@ export function GarbleArray(element) {
  * and returns an in-place ungarbling function for a nullable array whose elements
  * are of that type.
  * @param {(any) => any} element
- * @returns {(any[] | null) => (any[] | null)}
+ * @returns {(value: any[] | null) => (any[] | null)}
  */
 export function UngarbleArray(element) {
     if (element === UngarbleAny) {
@@ -145,7 +145,7 @@ export function CreateMap(key, value) {
  * @template K, V
  * @param {(K) => any} key
  * @param {(V) => any} value
- * @returns {({ [_: K]: V }) => { [_: any]: any }}
+ * @returns {(map: { [_: K]: V }) => { [_: any]: any }}
  */
 export function GarbleMap(key, value) {
     if (value === GarbleAny) {
@@ -167,7 +167,7 @@ export function GarbleMap(key, value) {
  * whose keys and values are of those types.
  * @param {(any) => any} key
  * @param {(any) => any} value
- * @returns {({ [_: any]: any }) => { [_: any]: any }}
+ * @returns {(map: { [_: any]: any }) => { [_: any]: any }}
  */
 export function UngarbleMap(key, value) {
     if (value === UngarbleAny) {
@@ -205,7 +205,7 @@ export function CreateNullable(element) {
  * and returns a garbling function for a nullable value of that type.
  * @template T
  * @param {(T) => any} element
- * @returns {(T | null) => any}
+ * @returns {(value: T | null) => any}
  */
 export function GarbleNullable(element) {
     if (element === GarbleAny) {
@@ -219,7 +219,7 @@ export function GarbleNullable(element) {
  * UngarbleNullable takes an ungarbling function for an arbitrary type
  * and returns an ungarbling function for a nullable value of that type.
  * @param {(any) => any} element
- * @returns {(any | null) => any}
+ * @returns {(value: any | null) => any}
  */
 export function UngarbleNullable(element) {
     if (element === UngarbleAny) {
