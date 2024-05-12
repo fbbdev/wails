@@ -15,7 +15,7 @@ import "./contextmenu.js";
 import "./drag.js";
 
 // Re-export (internal) public API
-export * as Call from "./calls.js";
+export * as Call from "./call.js";
 export * as Flags from "./flags.js";
 export * as System from "./system.js";
 export * as Types from "./types.js";
