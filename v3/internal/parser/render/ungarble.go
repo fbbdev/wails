@@ -77,14 +77,14 @@ func (m *module) JSUngarbleWithParams(typ types.Type, params string) string {
 
 		df := m.deferred(ungarble, typ)
 		if df == "" {
-			df = m.defer_(ungarble, typ, params)
-
 			if t.TypeArgs() != nil && t.TypeArgs().Len() > 0 {
 				// Defer type args.
 				for i := range t.TypeArgs().Len() {
 					m.JSUngarbleWithParams(t.TypeArgs().At(i), params)
 				}
 			}
+
+			df = m.defer_(ungarble, typ, params)
 
 			m.JSUngarbleWithParams(t.Underlying(), params)
 		}
@@ -149,7 +149,18 @@ func (m *module) DeferredUngarbles() []string {
 			)
 
 		case *types.Named:
-			result[df.index] = m.JSUngarbleWithParams(t.Underlying(), params)
+			result[df.index] = fmt.Sprintf(`
+function $$initUngarbleType%d(...args) {
+    if ($$ungarbleType%d === $$initUngarbleType%d) {
+        $$ungarbleType%d = %s%s;
+    }
+    return $$ungarbleType%d(...args);
+}`,
+				df.index,
+				df.index, df.index,
+				df.index, pre, m.JSUngarbleWithParams(t.Underlying(), params),
+				df.index,
+			)[1:] // Remove initial newline.
 
 		case *types.Pointer:
 			result[df.index] = fmt.Sprintf("%s$Types.UngarbleNullable(%s)", pre, m.JSUngarbleWithParams(t.Elem(), params))
@@ -169,9 +180,9 @@ func (m *module) DeferredUngarbles() []string {
 					builder.WriteRune(',')
 				}
 				builder.WriteString("\n    \"")
-				template.JSEscape(&builder, []byte(field.JsonName))
-				builder.WriteString("\": { from: \"")
 				template.JSEscape(&builder, []byte(field.JSName))
+				builder.WriteString("\": { from: \"")
+				template.JSEscape(&builder, []byte(field.JsonName))
 				builder.WriteString("\", ungarble: ")
 				builder.WriteString(ungarbleField)
 				builder.WriteString(" }")

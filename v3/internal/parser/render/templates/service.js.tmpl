@@ -121,13 +121,15 @@ $$createType{{$i}} = {{$create}};
 {{- if $deferred}}
 // Private type garbling functions
 {{- range $i, $garble := $deferred}}
-const $$garbleType{{$i}} = {{$garble}};
+{{if and (ge (len $garble) 15) (eq (slice $garble 0 15) "function $$init")}}var {{else}}const {{end -}}
+$$garbleType{{$i}} = {{$garble}};
 {{- end}}
 {{end}}
 {{- $deferred = $module.DeferredUngarbles}}
 {{- if $deferred}}
 // Private type ungarbling functions
 {{- range $i, $ungarble := $deferred}}
-const $$ungarbleType{{$i}} = {{$ungarble}};
+{{if and (ge (len $ungarble) 15) (eq (slice $ungarble 0 15) "function $$init")}}var {{else}}const {{end -}}
+$$ungarbleType{{$i}} = {{$ungarble}};
 {{- end}}
 {{end}}{{end -}}

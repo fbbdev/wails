@@ -133,14 +133,14 @@ func (m *module) JSGarbleWithParams(typ types.Type, params string) string {
 
 		df := m.deferred(garble, typ)
 		if df == "" {
-			df = m.defer_(garble, typ, params)
-
 			if t.TypeArgs() != nil && t.TypeArgs().Len() > 0 {
 				// Defer type args.
 				for i := range t.TypeArgs().Len() {
 					m.JSGarbleWithParams(t.TypeArgs().At(i), params)
 				}
 			}
+
+			df = m.defer_(garble, typ, params)
 
 			if m.UseInterfaces || !collect.IsClass(typ) {
 				m.JSGarbleWithParams(t.Underlying(), params)
@@ -208,7 +208,18 @@ func (m *module) DeferredGarbles() []string {
 
 		case *types.Named:
 			if m.UseInterfaces || !collect.IsClass(key) {
-				result[df.index] = m.JSGarbleWithParams(t.Underlying(), params)
+				result[df.index] = fmt.Sprintf(`
+function $$initGarbleType%d(...args) {
+    if ($$garbleType%d === $$initGarbleType%d) {
+        $$garbleType%d = %s%s;
+    }
+    return $$garbleType%d(...args);
+}`,
+					df.index,
+					df.index, df.index,
+					df.index, pre, m.JSGarbleWithParams(t.Underlying(), params),
+					df.index,
+				)[1:] // Remove initial newline.
 				break
 			}
 
