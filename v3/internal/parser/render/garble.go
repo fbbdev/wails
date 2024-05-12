@@ -127,7 +127,7 @@ func (m *module) JSGarbleWithParams(typ types.Type, params string) string {
 			return m.JSGarbleWithParams(t.Underlying(), params)
 		}
 
-		if collect.IsAny(typ) || collect.IsString(typ) {
+		if collect.IsAny(typ) || collect.IsString(typ) || !m.IsGarbled(typ) {
 			break
 		}
 

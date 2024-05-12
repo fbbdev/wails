@@ -71,7 +71,7 @@ func (m *module) JSUngarbleWithParams(typ types.Type, params string) string {
 			return m.JSUngarbleWithParams(t.Underlying(), params)
 		}
 
-		if collect.IsAny(typ) || collect.IsString(typ) {
+		if collect.IsAny(typ) || collect.IsString(typ) || !m.IsGarbled(typ) {
 			break
 		}
 
