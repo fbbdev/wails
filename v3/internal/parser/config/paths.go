@@ -10,7 +10,7 @@ var WailsRuntimePkgPaths = []string{
 }
 
 // WailsCoreRuntimePkgPath is the canonical import path of Wails v3's internal core JS runtime package.
-const WailsCoreRuntimePkgPath = "github.com/wailsapp/wails/v3/internal/runtime/core"
+const WailsCoreRuntimePkgPath = "github.com/wailsapp/wails/v3/pkg/runtime/core"
 
 // WailsFullRuntimePkgPath is the canonical import path of Wails v3's public JS runtime package.
 const WailsFullRuntimePkgPath = "github.com/wailsapp/wails/v3/pkg/runtime"
