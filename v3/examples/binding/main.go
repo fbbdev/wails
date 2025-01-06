@@ -4,6 +4,7 @@ import (
 	"embed"
 	"log"
 
+	"github.com/wailsapp/wails/v3/examples/binding/prova"
 	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
@@ -14,6 +15,7 @@ func main() {
 	app := application.New(application.Options{
 		Services: []application.Service{
 			application.NewService(&GreetService{}),
+			application.NewService(&prova.Service{}),
 		},
 		Assets: application.AssetOptions{
 			Handler: application.BundledAssetFileServer(assets),

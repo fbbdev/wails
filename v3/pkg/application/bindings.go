@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"os"
 	"reflect"
 	"runtime"
 	"strings"
@@ -146,6 +147,7 @@ func (b *Bindings) GenerateID(name string) (uint32, error) {
 	if ok {
 		return 0, fmt.Errorf("oh wow, we're sorry about this! Amazingly, a hash collision was detected for method '%s' (it generates the same hash as '%s'). To continue, please rename it. Sorry :(", name, boundMethod.String())
 	}
+	fmt.Fprintf(os.Stderr, "Bindings.GenerateID(%#v) => %#v\n", name, id)
 	return id, nil
 }
 
