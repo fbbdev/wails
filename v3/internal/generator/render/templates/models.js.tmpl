@@ -88,7 +88,7 @@ export const {{jsid $model.Name}} = {
     {{- end}}
      */
     {{- end}}
-    {{jsid $value.Name}}: {{jsvalue $value.Value}},
+    "{{js $value.Name}}": {{jsvalue $value.Value}},
 {{- end}}{{end}}{{end}}
 };
 {{else if $info.IsClassAlias}}

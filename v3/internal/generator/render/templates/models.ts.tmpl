@@ -33,7 +33,7 @@ import * as {{jsimport .}} from "{{js .RelPath}}/{{js $models}}";
  */
 {{- end}}
 {{- if $info.IsEnum}}
-export enum {{jsid $model.Name}} {
+export const enum {{jsid $model.Name}} {
     /**
      * The Go zero value for the underlying type of the enum.
      */
@@ -54,7 +54,7 @@ export enum {{jsid $model.Name}} {
     {{- end}}
      */
     {{- end}}
-    {{jsid $value.Name}} = {{jsvalue $value.Value}},
+    "{{js $value.Name}}" = {{jsvalue $value.Value}},
     {{- end}}{{end}}{{end}}
 };
 {{else if $info.IsClassAlias}}
@@ -101,9 +101,9 @@ export const {{jsid $model.Name}} = {
     {{- end}}
      */
     {{- end}}
-    {{jsid $value.Name}}: {{jsvalue $value.Value}},
+    "{{js $value.Name}}": {{jsvalue $value.Value}},
 {{- end}}{{end}}{{end}}
-};
+} as const;
 {{- end}}
 {{else if $info.IsClassOrInterface}}
 export {{if $info.IsInterface}}interface{{else}}class{{end}} {{jsid $model.Name}}{{$template.ParamList}} {
