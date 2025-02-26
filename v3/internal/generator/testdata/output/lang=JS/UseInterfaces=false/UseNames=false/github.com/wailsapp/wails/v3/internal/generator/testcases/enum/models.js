@@ -16,19 +16,19 @@ import { Create as $Create } from "/wails/runtime.js";
  * @namespace
  */
 export const Age = {
-    NewBorn: 0,
-    Teenager: 12,
-    YoungAdult: 18,
+    "NewBorn": 0,
+    "Teenager": 12,
+    "YoungAdult": 18,
 
     /**
      * Oh no, some grey hair!
      */
-    MiddleAged: 50,
+    "MiddleAged": 50,
 
     /**
      * Unbelievable!
      */
-    Mathusalem: 1000,
+    "Mathusalem": 1000,
 };
 
 /**
@@ -90,9 +90,9 @@ export const Title = {
     /**
      * Mister is a title
      */
-    Mister: "Mr",
-    Miss: "Miss",
-    Ms: "Ms",
-    Mrs: "Mrs",
-    Dr: "Dr",
+    "Mister": "Mr",
+    "Miss": "Miss",
+    "Ms": "Ms",
+    "Mrs": "Mrs",
+    "Dr": "Dr",
 };

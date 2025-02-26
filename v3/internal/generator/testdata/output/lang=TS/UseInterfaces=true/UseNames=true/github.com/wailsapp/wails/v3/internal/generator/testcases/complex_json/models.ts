@@ -90,7 +90,7 @@ export interface Person {
 /**
  * Title is a title
  */
-export enum Title {
+export const enum Title {
     /**
      * The Go zero value for the underlying type of the enum.
      */
@@ -99,11 +99,11 @@ export enum Title {
     /**
      * Mister is a title
      */
-    Mister = "Mr",
-    Miss = "Miss",
-    Ms = "Ms",
-    Mrs = "Mrs",
-    Dr = "Dr",
+    "Mister" = "Mr",
+    "Miss" = "Miss",
+    "Ms" = "Ms",
+    "Mrs" = "Mrs",
+    "Dr" = "Dr",
 };
 
 export interface embedded4 {

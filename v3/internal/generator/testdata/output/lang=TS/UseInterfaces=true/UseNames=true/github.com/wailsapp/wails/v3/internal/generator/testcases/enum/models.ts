@@ -11,20 +11,20 @@ export type Age = number;
  * @namespace
  */
 export const Age = {
-    NewBorn: 0,
-    Teenager: 12,
-    YoungAdult: 18,
+    "NewBorn": 0,
+    "Teenager": 12,
+    "YoungAdult": 18,
 
     /**
      * Oh no, some grey hair!
      */
-    MiddleAged: 50,
+    "MiddleAged": 50,
 
     /**
      * Unbelievable!
      */
-    Mathusalem: 1000,
-};
+    "Mathusalem": 1000,
+} as const;
 
 /**
  * Person represents a person
@@ -38,7 +38,7 @@ export interface Person {
 /**
  * Title is a title
  */
-export enum Title {
+export const enum Title {
     /**
      * The Go zero value for the underlying type of the enum.
      */
@@ -47,9 +47,9 @@ export enum Title {
     /**
      * Mister is a title
      */
-    Mister = "Mr",
-    Miss = "Miss",
-    Ms = "Ms",
-    Mrs = "Mrs",
-    Dr = "Dr",
+    "Mister" = "Mr",
+    "Miss" = "Miss",
+    "Ms" = "Ms",
+    "Mrs" = "Mrs",
+    "Dr" = "Dr",
 };

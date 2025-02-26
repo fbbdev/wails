@@ -15,11 +15,11 @@ export const Title = {
     /**
      * Mister is a title
      */
-    Mister: "Mr",
-    Miss: "Miss",
-    Ms: "Ms",
-    Mrs: "Mrs",
-    Dr: "Dr",
+    "Mister": "Mr",
+    "Miss": "Miss",
+    "Ms": "Ms",
+    "Mrs": "Mrs",
+    "Dr": "Dr",
 };
 
 // In interface mode, this file is likely to contain just comments.
