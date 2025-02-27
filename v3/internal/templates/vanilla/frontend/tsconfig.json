@@ -23,7 +23,7 @@
       "ESNext",
     ],
 
-    "strict": true,
+    "strict": false,
     "noUnusedLocals": true,
     "noUnusedParameters": false,
     "noImplicitAny": false,

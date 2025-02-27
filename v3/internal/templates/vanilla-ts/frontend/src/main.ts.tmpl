@@ -1,4 +1,4 @@
-import {GreetService} from "../bindings/changeme";
+import {GreetService} from "@bindings/{{ js (or .Git "changeme") }}";
 import {Events} from "@wailsio/runtime";
 
 const greetButton = document.getElementById('greet')! as HTMLButtonElement;
@@ -6,18 +6,18 @@ const resultElement = document.getElementById('result')! as HTMLDivElement;
 const nameElement : HTMLInputElement = document.getElementById('name')! as HTMLInputElement;
 const timeElement = document.getElementById('time')! as HTMLDivElement;
 
-greetButton.addEventListener('click', () => {
+greetButton.addEventListener('click', async () => {
     let name = (nameElement as HTMLInputElement).value
     if (!name) {
         name = 'anonymous';
     }
-    GreetService.Greet(name).then((result: string) => {
-        resultElement.innerText = result;
-    }).catch((err: Error) => {
-        console.log(err);
-    });
+    try {
+        resultElement.innerText = await GreetService.Greet(name);
+    } catch (err) {
+        console.error(err);
+    }
 });
 
-Events.On('time', (time: {data: any}) => {
+Events.On('time', (time) => {
     timeElement.innerText = time.data;
 });
