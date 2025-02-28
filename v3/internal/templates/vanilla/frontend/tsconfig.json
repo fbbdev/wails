@@ -29,9 +29,5 @@
     "noImplicitAny": false,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-
-    "paths": {
-      "@bindings/*": ["./bindings/*"]
-    }
   }
 }

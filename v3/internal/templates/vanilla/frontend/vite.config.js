@@ -1,4 +1,3 @@
-import { fileURLToPath, URL } from "url";
 import { defineConfig } from "vite";
 import wailsTypedEventsPlugin from "@wailsio/runtime/plugins/vite";
 
@@ -8,9 +7,4 @@ export default defineConfig({
   build: {
     target: "safari11"
   },
-  resolve: {
-    alias: [
-      { find: "@bindings", replacement: fileURLToPath(new URL("bindings", import.meta.url)) },
-    ]
-  }
-})
+});
