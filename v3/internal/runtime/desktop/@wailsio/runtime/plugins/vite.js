@@ -47,15 +47,14 @@ export default function wailsTypedEventsPlugin(bindingsRoot) {
             order: 'pre',
             handler(id, importer) {
                 if (
-                    runtimeId === null
-                    || eventsId === null
-                    || importer !== runtimeId
-                    || id !== "./events.js"
+                    bindingsId !== null
+                    && runtimeId !== null
+                    && eventsId !== null
+                    && importer === runtimeId
+                    && id === "./events.js"
                 ) {
-                    return;
+                    return TYPED_EVENTS_MODULE;
                 }
-
-                return TYPED_EVENTS_MODULE;
             }
         },
         load(id) {
