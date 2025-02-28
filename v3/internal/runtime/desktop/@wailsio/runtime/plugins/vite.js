@@ -26,7 +26,7 @@ export default function wailsTypedEventsPlugin(bindingsRoot) {
             const bindingsPath = `${bindingsRoot}/github.com/wailsapp/wails/v3/internal/eventcreate`;
             let resolution = await this.resolve(bindingsPath);
             if (!resolution || resolution.external) {
-                this.error(`Event bindings module not found at import specifier '${bindingsPath}'. Please verify that the wails tool is up to date and the binding generator runs successfully. If you moved the bindings to a custom location or have a custom vite config, you might need to reconfigure the '@bindings' alias or supply the root path as the first argument to \`wailsTypedEventsPlugin\``);
+                this.error(`Event bindings module not found at import specifier '${bindingsPath}'. Please verify that the wails tool is up to date and the binding generator runs successfully. If you moved the bindings to a custom location, ensure you supplied the correct root path as the first argument to \`wailsTypedEventsPlugin\``);
                 return;
             }
             bindingsId = resolution.id;
