@@ -13,9 +13,9 @@ const TYPED_EVENTS_MODULE = "\0wailsio_runtime_events_typed";
 /**
  * A plugin that monkey-patches the wails runtime to support typed custom events.
  *
- * @param {string} [bindingsRoot="@bindings"] - The root import path for generated bindings
+ * @param {string} [bindingsRoot] - The root import path for generated bindings
  */
-export default function wailsTypedEventsPlugin(bindingsRoot = "@bindings") {
+export default function wailsTypedEventsPlugin(bindingsRoot) {
     let bindingsId = null,
         runtimeId = null,
         eventsId = null;
@@ -23,10 +23,10 @@ export default function wailsTypedEventsPlugin(bindingsRoot = "@bindings") {
     return {
         name: "wails-typed-events",
         async buildStart() {
-            const bindingsPath = `${bindingsRoot}/github.com/wailsapp/wails/v3/internal/eventcreate.js`;
+            const bindingsPath = `${bindingsRoot}/github.com/wailsapp/wails/v3/internal/eventcreate`;
             let resolution = await this.resolve(bindingsPath);
             if (!resolution || resolution.external) {
-                this.warn(`Event bindings module not found at import specifier '${bindingsPath}'. Please verify that the wails tool is up to date and the binding generator runs successfully. If you moved the bindings to a custom location or have a custom vite config, you might need to reconfigure the '@bindings' alias or supply the root path as the first argument to \`wailsTypedEventsPlugin\``);
+                this.error(`Event bindings module not found at import specifier '${bindingsPath}'. Please verify that the wails tool is up to date and the binding generator runs successfully. If you moved the bindings to a custom location or have a custom vite config, you might need to reconfigure the '@bindings' alias or supply the root path as the first argument to \`wailsTypedEventsPlugin\``);
                 return;
             }
             bindingsId = resolution.id;
@@ -37,7 +37,7 @@ export default function wailsTypedEventsPlugin(bindingsRoot = "@bindings") {
 
             resolution = await this.resolve("./events.js", runtimeId);
             if (!resolution || resolution.external) {
-                this.warn("Could not resolve events module within @wailsio/runtime package. Please verify that the module is correctly installed and up to date.");
+                this.error("Could not resolve events module within @wailsio/runtime package. Please verify that the module is correctly installed and up to date.");
                 return;
             }
 
