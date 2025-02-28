@@ -63,7 +63,7 @@ func (renderer *Renderer) EventDataFile() string {
 // EventCreateFile returns the standard name of the event data creation file
 // with the appropriate extension.
 func (renderer *Renderer) EventCreateFile() string {
-	return "eventcreate.js"
+	return "eventcreate" + renderer.ext
 }
 
 // IndexFile returns the standard name of a package index file
