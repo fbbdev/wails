@@ -76,6 +76,10 @@ tasks:
     dir: frontend
     deps:
       - task: install:frontend:deps
+      - task: generate:bindings
+        vars:
+          BUILD_FLAGS:
+            ref: .BUILD_FLAGS
     cmds:
       - npm run dev -- --port {{ "{{.VITE_PORT}}" }} --strictPort
 
