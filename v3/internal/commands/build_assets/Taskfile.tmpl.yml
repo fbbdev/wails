@@ -14,7 +14,7 @@ tasks:
       - package.json
       - package-lock.json
     generates:
-      - node_modules/*
+      - node_modules
     preconditions:
       - sh: npm version
         msg: "Looks like npm isn't installed. Npm is part of the Node installer: https://nodejs.org/en/download/"
@@ -76,10 +76,6 @@ tasks:
     dir: frontend
     deps:
       - task: install:frontend:deps
-      - task: generate:bindings
-        vars:
-          BUILD_FLAGS:
-            ref: .BUILD_FLAGS
     cmds:
       - npm run dev -- --port {{ "{{.VITE_PORT}}" }} --strictPort
 
