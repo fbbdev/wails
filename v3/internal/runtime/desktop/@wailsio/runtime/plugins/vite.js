@@ -11,11 +11,14 @@ The electron alternative for Go
 const TYPED_EVENTS_MODULE = "\0wailsio_runtime_events_typed";
 
 /**
- * A plugin that monkey-patches the wails runtime to support typed custom events.
+ * A plugin that extends the wails runtime with locally generated code
+ * to provide support for typed custom events.
+ * With the plugin installed, vite will fail to build the project
+ * unless wails bindings have been generated first.
  *
  * @param {string} [bindingsRoot] - The root import path for generated bindings
  */
-export default function wailsTypedEventsPlugin(bindingsRoot) {
+export default function WailsTypedEvents(bindingsRoot) {
     let bindingsId = null,
         runtimeId = null,
         eventsId = null;
