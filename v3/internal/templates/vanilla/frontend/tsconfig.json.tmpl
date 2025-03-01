@@ -5,27 +5,20 @@
   ],
   "compilerOptions": {
     "allowJs": true,
-
+    "checkJs": false,
     "noEmit": true,
     "skipLibCheck": true,
-
-    "module": "ESNext",
+    "module": "ES2020",
     "moduleResolution": "bundler",
+    {{if .LocalModulePath}}"customConditions": ["wails-development"],{{end}}
     "resolveJsonModule": true,
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
-
     "lib": [
       "DOM",
       "DOM.Iterable",
       "ESNext",
     ],
-
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": false,
-    "noImplicitAny": false,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true
+    "strict": false,
   }
 }

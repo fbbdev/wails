@@ -34,8 +34,9 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
 
+    "customConditions": ["wails-development"],
     "paths": {
-      "/wails/runtime.js": ["../../runtime/desktop/@wailsio/runtime/src/index.ts"]
+      "/wails/runtime.js": ["../../runtime/desktop/@wailsio/runtime"]
     }
   }
 }
