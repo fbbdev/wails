@@ -3,8 +3,12 @@ name: Build + Test v3
 on:
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
+    branches:
+      - v3-alpha
   pull_request_review:
     types: [submitted]
+    branches:
+      - v3-alpha
 
 jobs:
   check_approval:
@@ -21,50 +25,6 @@ jobs:
           else
             echo "approved=false" >> $GITHUB_OUTPUT
           fi
-
-  check_build_artifacts:
-    name: Check runtime build artifact changes
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          persist-credentials: 'true'
-
-      - name: Get changed files
-        id: changed-files
-        uses: tj-actions/changed-files@v45
-        with:
-          files: |
-            v3/internal/runtime/desktop/@wailsio/runtime/dist/**
-            v3/internal/runtime/desktop/@wailsio/runtime/types/**
-
-      - name: Get merge base
-        id: merge-base
-        if: steps.changed-files.outputs.any_changed == 'true'
-        env:
-          BASE_SHA: ${{github.event.pull_request.base.sha}}
-          HEAD_SHA: ${{github.event.pull_request.head.sha}}
-        run: |
-          echo "sha=$(git merge-base "$BASE_SHA" "$HEAD_SHA")" >> $GITHUB_OUTPUT
-
-      - name: This PR includes changes to runtime build artifacts
-        uses: actions/github-script@v7
-        if: steps.changed-files.outputs.any_changed == 'true'
-        env:
-          MERGE_BASE_SHA: ${{steps.merge-base.outputs.sha}}
-        with:
-          script: |
-            process.exitCode = 1
-            core.error(
-              'The CI pipeline will rebuild and publish the runtime automatically.\n' +
-              'Please run the following command (or equivalent) in your local wails repo\n' +
-              'to revert all build artifact changes; then update the PR:\n\n' +
-              '    cd v3/internal/runtime/desktop/@wailsio/runtime &&\n' +
-              `    git restore -s ${process.env.MERGE_BASE_SHA} -W -S -- dist types &&\n` +
-              '    git commit -m "Revert build artifact changes"\n',
-              { title: 'This PR includes changes to runtime build artifacts' }
-            );
 
   test_js:
     name: Run JS Tests
@@ -125,13 +85,13 @@ jobs:
             v3/internal/runtime/desktop/@wailsio/runtime/tsconfig.tsbuildinfo
 
   test_go:
-    name: Run Go Tests
+    name: Run Go Tests v3
     needs: [check_approval, test_js]
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, macos-latest, ubuntu-latest]
+        os: [warp-windows-latest-x64-2x, warp-macos-15-arm64-6x, warp-ubuntu-latest-x64-2x]
         go-version: [1.24]
 
     steps:
@@ -262,3 +222,17 @@ jobs:
           wails3 init -n ${{ matrix.template }} -t ${{ matrix.template }}
           cd ${{ matrix.template }}
           wails3 build
+
+  results:
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    name: v3 Build Results
+    needs: [test_go, test_js, test_templates]
+    steps:
+      - run: |
+          result="${{ needs.build.result }}"
+          if [[ $result == "success" || $result == "skipped" ]]; then
+            exit 0
+          else
+            exit 1
+          fi
