@@ -10,11 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "preact": "^10.19.3"
+    "vue": "^3.2.45"
   },
   "devDependencies": {
-    "@preact/preset-vite": "^2.7.0",
-    "vite": "^5.0.8",
-    "@wailsio/runtime": "latest"
+    "@vitejs/plugin-vue": "^4.0.0",
+    "vite": "^5.0.0",
+    "@wailsio/runtime": "{{if .LocalModulePath}}file:../{{.LocalModulePath}}v3/internal/runtime/desktop/@wailsio/runtime{{else}}latest{{end}}"
   }
 }
