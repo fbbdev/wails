@@ -10,11 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@wailsio/runtime": "{{if .LocalModulePath}}file:../{{.LocalModulePath}}v3/internal/runtime/desktop/@wailsio/runtime{{else}}latest{{end}}",
     "vue": "^3.2.45"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.0.0",
-    "@wailsio/runtime": "{{if .LocalModulePath}}file:../{{.LocalModulePath}}v3/internal/runtime/desktop/@wailsio/runtime{{else}}latest{{end}}",
     "vite": "^5.0.0"
   }
 }

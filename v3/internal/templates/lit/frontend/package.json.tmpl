@@ -10,10 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@wailsio/runtime": "{{if .LocalModulePath}}file:../{{.LocalModulePath}}v3/internal/runtime/desktop/@wailsio/runtime{{else}}latest{{end}}",
     "lit": "^3.1.0"
   },
   "devDependencies": {
-    "@wailsio/runtime": "{{if .LocalModulePath}}file:../{{.LocalModulePath}}v3/internal/runtime/desktop/@wailsio/runtime{{else}}latest{{end}}",
     "vite": "^5.0.0"
   }
 }

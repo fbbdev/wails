@@ -9,8 +9,10 @@
     "build": "vite build --mode production",
     "preview": "vite preview"
   },
-  "devDependencies": {
+  "dependencies": {
     "@wailsio/runtime": "{{if .LocalModulePath}}file:../{{.LocalModulePath}}v3/internal/runtime/desktop/@wailsio/runtime{{else}}latest{{end}}",
+  },
+  "devDependencies": {
     "vite": "^5.0.0"
   }
 }
