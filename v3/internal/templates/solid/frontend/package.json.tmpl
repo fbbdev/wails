@@ -15,6 +15,6 @@
   "devDependencies": {
     "vite": "^5.0.8",
     "vite-plugin-solid": "^2.8.0",
-    "@wailsio/runtime": "latest"
+    "@wailsio/runtime": "{{if .LocalModulePath}}file:../{{.LocalModulePath}}v3/internal/runtime/desktop/@wailsio/runtime{{else}}latest{{end}}"
   }
 }
