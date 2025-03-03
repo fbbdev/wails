@@ -1,32 +1,28 @@
 {
-  "include": [
-    "./src/**/*",
-    "./bindings/github.com/wailsapp/wails/v3/internal/eventdata.d.ts"
-  ],
   "compilerOptions": {
-    "allowJs": true,
-
-    "noEmit": true,
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
 
-    "module": "ESNext",
+    /* Bundler mode */
     "moduleResolution": "bundler",
-    {{if .LocalModulePath}}"customConditions": ["wails-development"],{{end}}
+    "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "verbatimModuleSyntax": true,
+    "noEmit": true,
 
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ESNext",
-    ],
-
+    /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": false,
     "noImplicitAny": false,
     "noImplicitReturns": true,
+    "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-  }
+
+    {{if .LocalModulePath}}"customConditions": ["wails-development"],{{end}}
+  },
+  "include": ["src", "bindings"]
 }

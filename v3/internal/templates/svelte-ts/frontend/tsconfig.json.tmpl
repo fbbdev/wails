@@ -13,8 +13,11 @@
      */
     "allowJs": true,
     "checkJs": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "moduleDetection": "force",
+
+    {{if .LocalModulePath}}"customConditions": ["wails-development"],{{end}}
   },
-  "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.svelte"],
+  "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.svelte", "bindings"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
