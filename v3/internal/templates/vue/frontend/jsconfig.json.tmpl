@@ -16,12 +16,12 @@
     "module": "ESNext",
     "resolveJsonModule": true,
     /**
-     * Enable checkJs if you'd like type checking in `.svelte` and `.js` files.
+     * Enable checkJs if you'd like type checking in `.vue` and `.js` files.
      */
     "checkJs": false,
     "strict": true,
     "skipLibCheck": true,
     {{if .LocalModulePath}}"customConditions": ["wails-development"],{{end}}
   },
-  "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.vue", "bindings/**/*.d.ts"]
+  "include": ["src/**/*.d.ts", "src/**/*.js", "src/**/*.jsx", "src/**/*.vue", "bindings/**/*.d.ts"]
 }
