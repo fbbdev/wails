@@ -10,6 +10,9 @@
       "types": "./types/index.d.ts",
       "default": "./dist/index.js"
     },
+    "./global": {
+      "wails-development": "./src/global.d.ts"
+    },
     "./plugins/*": "./plugins/*"
   },
   "repository": {
