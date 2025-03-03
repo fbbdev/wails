@@ -1,5 +1,5 @@
 {
-  "name": "solid-ts",
+  "name": "frontend",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,12 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "solid-js": "^1.8.7"
+    "lit": "^3.1.0"
   },
   "devDependencies": {
     "typescript": "^5.2.2",
-    "vite": "^5.0.8",
-    "vite-plugin-solid": "^2.8.0",
-    "@wailsio/runtime": "latest"
+    "vite": "^5.0.0",
+    "@wailsio/runtime": "{{if .LocalModulePath}}file:../{{.LocalModulePath}}v3/internal/runtime/desktop/@wailsio/runtime{{else}}latest{{end}}"
   }
 }
