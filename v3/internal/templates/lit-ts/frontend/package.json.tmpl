@@ -13,8 +13,8 @@
     "lit": "^3.1.0"
   },
   "devDependencies": {
+    "@wailsio/runtime": "{{if .LocalModulePath}}file:../{{.LocalModulePath}}v3/internal/runtime/desktop/@wailsio/runtime{{else}}latest{{end}}",
     "typescript": "^5.2.2",
-    "vite": "^5.0.0",
-    "@wailsio/runtime": "{{if .LocalModulePath}}file:../{{.LocalModulePath}}v3/internal/runtime/desktop/@wailsio/runtime{{else}}latest{{end}}"
+    "vite": "^5.0.0"
   }
 }

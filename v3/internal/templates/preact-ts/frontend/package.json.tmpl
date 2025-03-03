@@ -14,8 +14,8 @@
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.7.0",
+    "@wailsio/runtime": "{{if .LocalModulePath}}file:../{{.LocalModulePath}}v3/internal/runtime/desktop/@wailsio/runtime{{else}}latest{{end}}",
     "typescript": "^5.2.2",
-    "vite": "^5.0.8",
-    "@wailsio/runtime": "{{if .LocalModulePath}}file:../{{.LocalModulePath}}v3/internal/runtime/desktop/@wailsio/runtime{{else}}latest{{end}}"
+    "vite": "^5.0.8"
   }
 }
