@@ -23,9 +23,5 @@
     "skipLibCheck": true,
     {{if .LocalModulePath}}"customConditions": ["wails-development"],{{end}}
   },
-  /**
-   * Use vite-env.d.ts instead of compilerOptions.types
-   * to avoid limiting type declarations.
-   */
   "include": ["src/**/*.d.ts", "src/**/*.js", "src/**/*.svelte", "bindings/**/*.d.ts"]
 }
