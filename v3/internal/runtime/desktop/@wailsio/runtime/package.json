@@ -6,7 +6,6 @@
   "types": "types/index.d.ts",
   "exports": {
     ".": {
-      "wails-development": "./src/index.ts",
       "types": "./types/index.d.ts",
       "default": "./dist/index.js"
     },
@@ -41,6 +40,7 @@
     "generate": "npm run generate:events",
     "prebuild": "npm run clean && npm run generate",
     "build:code": "npx tsc",
+    "build:code:watch": "npx tsc --watch",
     "build:docs": "npx typedoc --gitRevision v3-alpha --plugin typedoc-plugin-mdn-links --plugin typedoc-plugin-missing-exports ./src/index.ts",
     "build:docs:md": "npx typedoc --gitRevision v3-alpha --plugin typedoc-plugin-markdown --plugin typedoc-plugin-mdn-links --plugin typedoc-plugin-missing-exports ./src/index.ts",
     "build": "npm run build:code & npm run build:docs & wait",
