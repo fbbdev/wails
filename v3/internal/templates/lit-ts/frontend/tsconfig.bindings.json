@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "target": "ES2015",
+    "moduleResolution": "bundler",
+    "skipLibCheck": true,
+    "tsBuildInfoFile": "bindings/bindings.tsbuildinfo"
+  }, 
+  "include": ["bindings"]
+}

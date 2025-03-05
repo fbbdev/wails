@@ -9,12 +9,12 @@
     "build": "vite build --mode production",
     "preview": "vite preview"
   },
+    "dependencies": {
+    "@wailsio/runtime": "{{if .LocalModulePath}}file:../{{.LocalModulePath}}v3/internal/runtime/desktop/@wailsio/runtime{{else}}latest{{end}}",
+    "@builder.io/qwik": "^1.3.0"
+  },
   "devDependencies": {
     "typescript": "^5.2.2",
     "vite": "^5.0.8"
-  },
-  "dependencies": {
-    "@builder.io/qwik": "^1.3.0",
-    "@wailsio/runtime": "{{if .LocalModulePath}}file:../{{.LocalModulePath}}v3/internal/runtime/desktop/@wailsio/runtime{{else}}latest{{end}}"
   }
 }

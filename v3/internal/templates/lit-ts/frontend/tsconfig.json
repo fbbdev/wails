@@ -19,7 +19,10 @@
     "noUnusedLocals": true,
     "noUnusedParameters": false,
     "noImplicitAny": false,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
   },
-  "include": ["src"]
+  "include": ["src", "bindings"],
+  "references": [{
+    "path": "./tsconfig.bindings.json"
+  }]
 }
