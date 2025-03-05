@@ -20,7 +20,10 @@
  * @module
  */
 {{end}}
-import { Call as $Call, type CancellablePromise as $CancellablePromise{{if not $useInterfaces}}, Create as $Create{{end}} } from "{{js $runtime}}";
+/**
+ * @import { CancellablePromise as $CancellablePromise } from "@wailsio/runtime"
+ */
+import { Call as $Call{{if not $useInterfaces}}, Create as $Create{{end}} } from "{{js $runtime}}";
 {{range $imports.External}}
 import * as {{jsimport .}} from "{{js .RelPath}}/{{js $models}}";
 {{- end}}{{if $imports.External}}
