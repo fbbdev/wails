@@ -11,7 +11,6 @@
 
     "module": "ESNext",
     "moduleResolution": "bundler",
-    {{if .LocalModulePath}}"customConditions": ["wails-development"],{{end}}
     "resolveJsonModule": true,
     "isolatedModules": true,
     "verbatimModuleSyntax": true,

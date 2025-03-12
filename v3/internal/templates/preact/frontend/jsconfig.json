@@ -16,12 +16,11 @@
     "module": "ESNext",
     "resolveJsonModule": true,
     /**
-     * Enable checkJs if you'd like type checking in `.vue` and `.js` files.
+     * Enable checkJs if you'd like type checking in `.js(x)` files.
      */
     "checkJs": false,
     "strict": true,
     "skipLibCheck": true,
-    {{if .LocalModulePath}}"customConditions": ["wails-development"],{{end}}
   },
-  "include": ["src/**/*.d.ts", "src/**/*.js", "src/**/*.jsx", "src/**/*.vue", "bindings/**/*.d.ts"]
+  "include": ["src/**/*", "bindings/**/*.d.ts"]
 }
