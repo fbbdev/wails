@@ -6,7 +6,6 @@
   "types": "types/index.d.ts",
   "exports": {
     ".": {
-      "wails-development": "./src/index.ts",
       "types": "./types/index.d.ts",
       "default": "./dist/index.js"
     },
