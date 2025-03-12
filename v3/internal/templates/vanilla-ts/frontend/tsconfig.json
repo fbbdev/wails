@@ -27,6 +27,5 @@
     "noImplicitAny": false,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-  },
-  "include": ["src", "bindings"]
+  }
 }
