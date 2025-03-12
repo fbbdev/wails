@@ -1,21 +1,15 @@
 import { defineConfig } from 'vite'
-import { svelte } from '@sveltejs/vite-plugin-svelte'
+import { qwikVite } from '@builder.io/qwik/optimizer'
 import WailsTypedEvents from "@wailsio/runtime/plugins/vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    svelte(),
+    qwikVite({
+      csr: true,
+    }),
     WailsTypedEvents("./bindings"),
   ],
-  {{- if .LocalModulePath}}
-  resolve: {
-    // Configure the resolution system to import the development version of the runtime package.
-    // This is only correct when using a development version of wails directly from the repository.
-    // Otherwise, this option (as well as the matching one in the tsconfig.json file) should be removed.
-    conditions: ["wails-development"]
-  },
-  {{- end}}
   build: {
     // Wails supports deployment on macOS 10.13 High Sierra,
     // whose webview is based on the same runtime as Safari 11.
