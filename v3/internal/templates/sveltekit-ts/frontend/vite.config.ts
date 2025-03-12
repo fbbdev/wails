@@ -1,6 +1,6 @@
 import { sveltekit } from "@sveltejs/kit/vite";
 import { defineConfig, searchForWorkspaceRoot } from "vite";
-import WailsTypedEvents from "@wailsio/runtime/plugins/vite";
+import wails from "@wailsio/runtime/plugins/vite";
 
 export default defineConfig({
   server: {
@@ -13,5 +13,5 @@ export default defineConfig({
       ],
     },
   },
-  plugins: [sveltekit(), WailsTypedEvents("./bindings")],
+  plugins: [sveltekit(), wails("./bindings")],
 });
