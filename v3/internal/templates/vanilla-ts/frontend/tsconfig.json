@@ -1,8 +1,4 @@
 {
-  "include": [
-    "./src/**/*",
-    "./bindings/github.com/wailsapp/wails/v3/internal/eventdata.d.ts"
-  ],
   "compilerOptions": {
     "allowJs": true,
 
@@ -27,5 +23,6 @@
     "noImplicitAny": false,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-  }
+  },
+  "include": ["src", "bindings"]
 }
