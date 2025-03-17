@@ -1,14 +1,7 @@
 {
   "include": [
-    "output/**/*.js",
-    "output/**/*.ts"
-  ],
-  "exclude": [
-    "output/**/*.d.ts",
-    "output/**/*.got.?s"
-  ],
-  "references": [
-    { "path": "../../runtime/desktop/@wailsio/runtime" }
+    "./src/**/*",
+    "./bindings/github.com/wailsapp/wails/v3/internal/eventdata.d.ts"
   ],
   "compilerOptions": {
     "allowJs": true,
@@ -16,26 +9,23 @@
     "noEmit": true,
     "skipLibCheck": true,
 
-    "target": "ES2015",
-    "module": "ES2015",
+    "module": "ESNext",
     "moduleResolution": "bundler",
+    "resolveJsonModule": true,
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
 
     "lib": [
       "DOM",
-      "ESNext"
+      "DOM.Iterable",
+      "ESNext",
     ],
 
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": false,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-
-    "paths": {
-      "/wails/runtime.js": ["../../runtime/desktop/@wailsio/runtime"]
-    }
   }
 }
