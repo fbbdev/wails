@@ -258,8 +258,21 @@ func (m *module) PostponedCreates() []string {
 			result[pp.index] = fmt.Sprintf("%s$Create.Map($Create.Any, %s)%s", pre, m.JSCreateWithParams(t.Elem(), pp.params), post)
 
 		case *types.Named:
-			if !collect.IsClass(key) {
-				// Creation functions for non-struct named types
+			isClass := collect.IsClass(key)
+			var needsIndirectAssignment, hasTypeArgs, isFromCurrentPkg bool
+			if isClass {
+				hasTypeArgs = t.TypeArgs() != nil && t.TypeArgs().Len() > 0
+				isFromCurrentPkg = t.Obj().Pkg().Path() == m.Imports.Self
+				needsIndirectAssignment = pp.params == "" && hasTypeArgs && isFromCurrentPkg && !m.Imports.ImportModels
+			} else {
+				needsIndirectAssignment = true
+			}
+
+			var builder strings.Builder
+
+			if needsIndirectAssignment {
+				// Postponed creates for non-struct named types,
+				// or for struct named types with type arguments declared in the current module,
 				// require an indirect assignment to break cycles.
 
 				// Typescript cannot infer the return type on its own: add hints.
@@ -271,49 +284,54 @@ func (m *module) PostponedCreates() []string {
 					cast = "/** @type {(...args: any[]) => any} */"
 				}
 
-				result[pp.index] = fmt.Sprintf(`
+				builder.WriteString(fmt.Sprintf(`
 %s(function $$initCreateType%d(...args%s)%s {
     if ($$createType%d === $$initCreateType%d) {
-        $$createType%d = %s%s%s;
-    }
-    return $$createType%d(...args);
-})`,
+        $$createType%d = `,
 					cast, pp.index, argType, returnType,
 					pp.index, pp.index,
-					pp.index, pre, m.JSCreateWithParams(t.Underlying(), pp.params), post,
 					pp.index,
-				)[1:] // Remove initial newline.
-
-				// We're done.
-				break
+				)[1:]) // Remove initial newline.
 			}
-
-			var builder strings.Builder
 
 			builder.WriteString(pre)
 
-			if t.Obj().Pkg().Path() == m.Imports.Self {
-				if m.Imports.ImportModels {
-					builder.WriteString("$models.")
+			if isClass {
+				if isFromCurrentPkg {
+					if m.Imports.ImportModels {
+						builder.WriteString("$models.")
+					}
+				} else {
+					builder.WriteString(jsimport(m.Imports.External[t.Obj().Pkg().Path()]))
+					builder.WriteRune('.')
+				}
+				builder.WriteString(jsid(t.Obj().Name()))
+				builder.WriteString(".createFrom")
+
+				if hasTypeArgs {
+					builder.WriteString("(")
+					for i := range t.TypeArgs().Len() {
+						if i > 0 {
+							builder.WriteString(", ")
+						}
+						builder.WriteString(m.JSCreateWithParams(t.TypeArgs().At(i), pp.params))
+					}
+					builder.WriteString(")")
 				}
 			} else {
-				builder.WriteString(jsimport(m.Imports.External[t.Obj().Pkg().Path()]))
-				builder.WriteRune('.')
+				builder.WriteString(m.JSCreateWithParams(t.Underlying(), pp.params))
 			}
-			builder.WriteString(jsid(t.Obj().Name()))
-			builder.WriteString(".createFrom")
 
-			if t.TypeArgs() != nil && t.TypeArgs().Len() > 0 {
-				builder.WriteString("(")
-				for i := range t.TypeArgs().Len() {
-					if i > 0 {
-						builder.WriteString(", ")
-					}
-					builder.WriteString(m.JSCreateWithParams(t.TypeArgs().At(i), pp.params))
-				}
-				builder.WriteString(")")
-			}
 			builder.WriteString(post)
+
+			if needsIndirectAssignment {
+				builder.WriteString(fmt.Sprintf(`;
+    }
+    return $$createType%d(...args);
+})`,
+					pp.index,
+				))
+			}
 
 			result[pp.index] = builder.String()
 
